@@ -62,14 +62,14 @@ public class SlimeController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Касаемся пола (кроме монет)
+        // Касаемся земли/пола
         if (!collision.gameObject.CompareTag("coin"))
         {
             isGrounded = true;
         }
     }
 
-    // Сбор монет происходит мгновенно при касании
+    // Сбор монет происходит мгновенно при касании (так как у монет стоит Is Trigger)
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("coin"))
@@ -82,17 +82,16 @@ public class SlimeController : MonoBehaviour
         }
     }
 
-    // Логика удержания / нахождения на мусоре и крови
-    private void OnTriggerStay2D(Collider2D other)
+    // Сбор мусора и крови (теперь они падают с гравитацией, поэтому используем Collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         // Сбор обычного мусора по таймеру (ускоряется при прокачке)
-        if (other.CompareTag("trash") && other.gameObject.GetComponent<Collider2D>().enabled)
+        if (collision.gameObject.CompareTag("trash"))
         {
             trashCleanTimer += Time.deltaTime * cleaningSpeedMultiplier;
             if (trashCleanTimer >= trashCleanTime)
             {
-                other.gameObject.GetComponent<Collider2D>().enabled = false; 
-                Destroy(other.gameObject); 
+                Destroy(collision.gameObject); 
                 if (GameManager.Instance != null)
                 {
                     GameManager.Instance.AddScore(); 
@@ -102,12 +101,12 @@ public class SlimeController : MonoBehaviour
         }
 
         // Оттирание крови по таймеру
-        if (other.CompareTag("blood"))
+        if (collision.gameObject.CompareTag("blood"))
         {
             cleanTimer += Time.deltaTime * cleaningSpeedMultiplier;
             if (cleanTimer >= bloodCleanTime)
             {
-                Destroy(other.gameObject);
+                Destroy(collision.gameObject);
                 if (GameManager.Instance != null)
                 {
                     GameManager.Instance.AddCoins(3); // За кровь дают больше монет
@@ -118,10 +117,10 @@ public class SlimeController : MonoBehaviour
     }
 
     // Если Слайм отошел от объекта до того, как убрал его — сбрасываем таймер
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnCollisionExit2D(Collision2D collision)
     {
-        if (other.CompareTag("trash")) trashCleanTimer = 0f;
-        if (other.CompareTag("blood")) cleanTimer = 0f;
+        if (collision.gameObject.CompareTag("trash")) trashCleanTimer = 0f;
+        if (collision.gameObject.CompareTag("blood")) cleanTimer = 0f;
     }
 
     // Метод получения урона (вызывается из скрипта стрелы лучника)
