@@ -269,27 +269,6 @@ MonoBehaviour:
       m_HorizontalBearingY: 45
       m_HorizontalAdvance: 50
     m_GlyphRect:
-<<<<<<< HEAD
-      m_X: 66
-      m_Y: 10
-      m_Width: 49
-      m_Height: 62
-    m_Scale: 1
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-  - m_Index: 1013
-    m_Metrics:
-      m_Width: 65
-      m_Height: 80
-      m_HorizontalBearingX: 3
-      m_HorizontalBearingY: 62
-      m_HorizontalAdvance: 71
-    m_GlyphRect:
-      m_X: 10
-      m_Y: 218
-      m_Width: 65
-      m_Height: 80
-=======
       m_X: 10
       m_Y: 88
       m_Width: 43
@@ -339,7 +318,6 @@ MonoBehaviour:
       m_Y: 302
       m_Width: 40
       m_Height: 64
->>>>>>> 2a295b6c3feb23d13b7126e2787434162e6b2aa6
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
@@ -361,13 +339,8 @@ MonoBehaviour:
     m_GlyphIndex: 997
     m_Scale: 1
   - m_ElementType: 1
-<<<<<<< HEAD
-    m_Unicode: 1092
-    m_GlyphIndex: 1013
-=======
     m_Unicode: 1088
     m_GlyphIndex: 1009
->>>>>>> 2a295b6c3feb23d13b7126e2787434162e6b2aa6
     m_Scale: 1
   m_AtlasTextures:
   - {fileID: 28268798066460806}
@@ -382,51 +355,6 @@ MonoBehaviour:
   m_UsedGlyphRects:
   - m_X: 0
     m_Y: 0
-<<<<<<< HEAD
-    m_Width: 56
-    m_Height: 64
-  - m_X: 0
-    m_Y: 64
-    m_Width: 43
-    m_Height: 64
-  - m_X: 0
-    m_Y: 128
-    m_Width: 65
-    m_Height: 80
-  - m_X: 56
-    m_Y: 0
-    m_Width: 68
-    m_Height: 81
-  - m_X: 0
-    m_Y: 208
-    m_Width: 84
-    m_Height: 99
-  m_FreeGlyphRects:
-  - m_X: 124
-    m_Y: 0
-    m_Width: 387
-    m_Height: 511
-  - m_X: 43
-    m_Y: 81
-    m_Width: 468
-    m_Height: 47
-  - m_X: 43
-    m_Y: 64
-    m_Width: 13
-    m_Height: 64
-  - m_X: 0
-    m_Y: 307
-    m_Width: 511
-    m_Height: 204
-  - m_X: 65
-    m_Y: 81
-    m_Width: 446
-    m_Height: 127
-  - m_X: 84
-    m_Y: 81
-    m_Width: 427
-    m_Height: 430
-=======
     m_Width: 77
     m_Height: 78
   - m_X: 0
@@ -470,7 +398,6 @@ MonoBehaviour:
     m_Y: 292
     m_Width: 452
     m_Height: 219
->>>>>>> 2a295b6c3feb23d13b7126e2787434162e6b2aa6
   m_FontFeatureTable:
     m_MultipleSubstitutionRecords: []
     m_LigatureSubstitutionRecords: []
