@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance; // Ссылка для других скриптов
 
     public TextMeshProUGUI scoreText; // Сюда закинем наш текст
-    public int maxTrashAllowed = 10;   // Если на уровне станет больше 10 мусора — проигрыш
+    public int maxTrashAllowed = 10;   
 
     private int score = 0;
 
