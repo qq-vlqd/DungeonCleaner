@@ -22,5 +22,7 @@ public class UpgradeMenu : MonoBehaviour
     {
         // ТОЛЬКО ДЛЯ ТЕСТА, удалить перед сдачей: клавиша C даёт 50 монет
         if (Input.GetKeyDown(KeyCode.C)) { Upgrades.Coins += 50; RefreshAll(); }
+        if (Input.GetKeyDown(KeyCode.R)) { Upgrades.ResetAll(); RefreshAll(); }
     }
+    
 }
