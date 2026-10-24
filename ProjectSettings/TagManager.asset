@@ -9,6 +9,7 @@ TagManager:
   - Ground
   - Ladder
   - Trash
+  - Breakable
   layers:
   - Default
   - TransparentFX
