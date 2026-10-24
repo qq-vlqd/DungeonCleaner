@@ -22,14 +22,15 @@ public class SlimeController : MonoBehaviour
     public LayerMask groundLayer;         
 
     private Rigidbody2D rb;
-    private Animator animator; // Ссылка на компонент Animator
+    private Animator animator; 
     private bool isGrounded;
     private float horizontalInput;
+    private bool coinsBanked = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>(); // Получаем Animator при старте
+        animator = GetComponent<Animator>(); 
         UpdateTrashUI(); 
     }
 
@@ -55,10 +56,14 @@ public class SlimeController : MonoBehaviour
             isGrounded = true; 
         }
 
-        // Движение
-        rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
+        // Движение с учетом множителя прокачки
+        float currentSpeedMultiplier = 1f;
+        // Защита, если класс Upgrades существует в проекте
+        // currentSpeedMultiplier = Upgrades.SpeedMultiplier; 
 
-        // Передаем параметр Speed в Animator (используем абсолютное значение, чтобы ходьба в обе стороны давала положительную скорость)
+        rb.linearVelocity = new Vector2(horizontalInput * moveSpeed * currentSpeedMultiplier, rb.linearVelocity.y);
+
+        // Передаем параметр Speed в Animator (абсолютное значение)
         if (animator != null)
         {
             animator.SetFloat("Speed", Mathf.Abs(horizontalInput));
@@ -84,6 +89,15 @@ public class SlimeController : MonoBehaviour
         {
             animator.SetTrigger("Jump");
         }
+    }
+
+    public void BankCoins()
+    {
+        if (coinsBanked) return;          // чтобы не начислить дважды
+        coinsBanked = true;
+        
+        // Безопасное начисление монет (если класс Upgrades подключен)
+        // Upgrades.Coins += Mathf.RoundToInt(collectedTrashCount * Upgrades.CoinMultiplier);
     }
 
     public void TakeDamage(int damage)
