@@ -4,9 +4,11 @@ public class KnightBot : MonoBehaviour
 {
     [Header("Движение и Прыжки")]
     public float speed = 2.5f; 
-    public float jumpForce = 7f;                  
+    public float climbSpeed = 3f;                   
+    public float jumpForce = 7f;                    
     public float obstacleCheckDistance = 0.8f;   
-    public LayerMask groundLayer;                 
+    public LayerMask groundLayer;                
+    public LayerMask wallOnlyLayer;              // Слой только для сплошных стен/пола (без бочек и объектов)
 
     [Header("Префаб Мусора")]
     public GameObject trashPrefab; 
@@ -17,9 +19,14 @@ public class KnightBot : MonoBehaviour
 
     [Header("Бой со Скелетом")]
     public float attackRange = 1.5f;     
-    public int knightDamage = 25;        
+    public int knightDamage = 25;           
     public float attackCooldown = 1.5f;  
     private float attackTimer = 0f;
+
+    [Header("Лестницы")]
+    private bool isTouchingLadder = false;       
+    private bool isClimbing = false;             
+    private Transform currentLadder;             
 
     private Transform targetArcher;  
     private ArcherBot currentArcherScript;
@@ -37,30 +44,67 @@ public class KnightBot : MonoBehaviour
         
         if (!isBoss)
         {
-            FindNearestArcher();
+            FindSameFloorArcher();
         }
     }
 
     void Update()
     {
         attackTimer += Time.deltaTime;
+        
+        if (!isBoss)
+        {
+            FindSameFloorArcher();
+        }
     }
 
     void FixedUpdate()
     {
         float currentSpeedX = 0f;
+        float currentSpeedY = rb.linearVelocity.y;
 
         if (isBoss)
         {
+            rb.gravityScale = 1f;
             currentSpeedX = Mathf.Sin(Time.time) * speed;
-            rb.linearVelocity = new Vector2(currentSpeedX, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(currentSpeedX, currentSpeedY);
             CheckAndJump(Mathf.Sign(currentSpeedX));
+            return;
         }
+
+        // 1. Подъем по лестнице
+        if (isTouchingLadder)
+        {
+            isClimbing = true;
+        }
+
+        if (isClimbing)
+        {
+            rb.gravityScale = 0f;
+            
+            if (currentLadder != null && transform.position.y > currentLadder.position.y + 0.8f)
+            {
+                isClimbing = false;
+                isTouchingLadder = false;
+                rb.gravityScale = 1f;
+                rb.linearVelocity = new Vector2(speed, jumpForce * 0.5f);
+            }
+            else
+            {
+                float ladderX = currentLadder != null ? currentLadder.position.x : transform.position.x;
+                float alignX = (ladderX - transform.position.x) * 5f; 
+                
+                rb.linearVelocity = new Vector2(alignX, climbSpeed);
+                currentSpeedX = 0f;
+            }
+        }
+        // 2. ПРИОРИТЕТ: Если есть видимый скелет — идем к нему независимо от направления (влево или вправо)
         else if (targetArcher != null)
         {
-            float distance = Vector2.Distance(transform.position, targetArcher.position);
+            rb.gravityScale = 1f;
+            float distanceX = targetArcher.position.x - transform.position.x;
 
-            if (distance <= attackRange)
+            if (Mathf.Abs(distanceX) <= attackRange)
             {
                 rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
 
@@ -72,18 +116,20 @@ public class KnightBot : MonoBehaviour
             }
             else
             {
-                float direction = Mathf.Sign(targetArcher.position.x - transform.position.x);
+                float direction = Mathf.Sign(distanceX);
                 currentSpeedX = direction * speed;
                 rb.linearVelocity = new Vector2(currentSpeedX, rb.linearVelocity.y);
                 CheckAndJump(direction);
             }
         }
+        // 3. Если скелетов нет — идем вправо
         else
         {
-            currentSpeedX = speed;
+            rb.gravityScale = 1f;
+
+            currentSpeedX = speed; 
             rb.linearVelocity = new Vector2(currentSpeedX, rb.linearVelocity.y);
             CheckAndJump(1f);
-            FindNearestArcher();
         }
 
         if (anim != null)
@@ -101,9 +147,57 @@ public class KnightBot : MonoBehaviour
         }
     }
 
+    void FindSameFloorArcher()
+    {
+        GameObject[] archers = GameObject.FindGameObjectsWithTag("Archer");
+        float shortestDistance = Mathf.Infinity;
+        Transform nearest = null;
+
+        foreach (GameObject archer in archers)
+        {
+            Transform archerTransform = archer.transform;
+            ArcherBot archerScript = archerTransform.GetComponent<ArcherBot>();
+
+            if (archerScript != null && !archerScript.IsDead())
+            {
+                float distanceY = Mathf.Abs(archerTransform.position.y - transform.position.y);
+
+                // Проверяем, что скелет находится на нашем этаже
+                if (distanceY < 1.2f)
+                {
+                    Vector2 direction = (archerTransform.position - transform.position).normalized;
+                    float distance = Vector2.Distance(transform.position, archerTransform.position);
+                    
+                    // Проверяем лучом только сплошные стены/пол (игнорируя бочки, если они не на этом слое)
+                    RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, distance, wallOnlyLayer);
+
+                    if (hit.collider == null) 
+                    {
+                        if (distance < shortestDistance)
+                        {
+                            shortestDistance = distance;
+                            nearest = archerTransform;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (nearest != null)
+        {
+            targetArcher = nearest;
+            currentArcherScript = nearest.GetComponent<ArcherBot>();
+        }
+        else
+        {
+            targetArcher = null;
+            currentArcherScript = null;
+        }
+    }
+
     void CheckAndJump(float moveDirection)
     {
-        if (moveDirection == 0 || !isGrounded) return;
+        if (moveDirection == 0 || !isGrounded || isClimbing) return;
 
         Vector2 rayOrigin = new Vector2(transform.position.x, transform.position.y - 0.2f);
         Vector2 rayDirection = new Vector2(moveDirection, 0f);
@@ -130,26 +224,20 @@ public class KnightBot : MonoBehaviour
         }
     }
 
-    void FindNearestArcher()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        GameObject[] archers = GameObject.FindGameObjectsWithTag("Archer");
-        float shortestDistance = Mathf.Infinity;
-        Transform nearest = null;
-
-        foreach (GameObject archer in archers)
+        if (collision.CompareTag("Ladder"))
         {
-            float distance = Vector2.Distance(transform.position, archer.transform.position);
-            if (distance < shortestDistance)
-            {
-                shortestDistance = distance;
-                nearest = archer.transform;
-            }
+            isTouchingLadder = true;
+            currentLadder = collision.transform;
         }
+    }
 
-        if (nearest != null)
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Ladder"))
         {
-            targetArcher = nearest;
-            currentArcherScript = nearest.GetComponent<ArcherBot>();
+            isTouchingLadder = false;
         }
     }
 
@@ -168,13 +256,13 @@ public class KnightBot : MonoBehaviour
             {
                 targetArcher = null;
                 currentArcherScript = null;
+                FindSameFloorArcher(); 
             }
         }
     }
 
     public void TakeArrowHit()
     {
-        // Спавн мусора при попадании стрелы
         if (trashPrefab != null)
         {
             Instantiate(trashPrefab, transform.position, Quaternion.identity);
@@ -188,7 +276,6 @@ public class KnightBot : MonoBehaviour
         bossHP -= damage;
         if (bossHP <= 0)
         {
-            // Спавн мусора при смерти босса
             if (trashPrefab != null)
             {
                 Instantiate(trashPrefab, transform.position, Quaternion.identity);

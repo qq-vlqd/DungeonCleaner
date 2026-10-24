@@ -236,7 +236,6 @@ public class ArcherBot : MonoBehaviour
     {
         return hp <= 0;
     }
-
     void Die()
     {
         if (trashPrefab != null)
