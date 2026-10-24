@@ -145,11 +145,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3334272329662822877}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2e76749384c124419cb35709e5e6957, type: 3}
+  m_Script: {fileID: 11500000, guid: ab74a4b06c9e07c42a76cbfdb3c39f5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  speed: 10
+  speed: 15
   lifeTime: 5
   trashPrefab: {fileID: 5290459231065880416, guid: 214945dd7671a5b82a3da17c5e6b402e, type: 3}
 --- !u!50 &-8915128208134068767
