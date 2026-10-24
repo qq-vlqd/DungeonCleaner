@@ -149,3 +149,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   damage: 1
+  trashDropPrefab: {fileID: 5290459231065880416, guid: 214945dd7671a5b82a3da17c5e6b402e, type: 3}
