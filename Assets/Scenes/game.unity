@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 472838549}
   m_Layer: 0
   m_Name: ArcherSkeleton
-  m_TagString: Untagged
+  m_TagString: Archer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -292,6 +292,10 @@ MonoBehaviour:
   shootPoint: {fileID: 525562099}
   shootInterval: 2
   detectionRange: 8
+  moveSpeed: 3
+  safeDistance: 5
+  maxHealth: 50
+  trashDropPrefab: {fileID: 5290459231065880416, guid: 214945dd7671a5b82a3da17c5e6b402e, type: 3}
 --- !u!50 &472838550
 Rigidbody2D:
   serializedVersion: 5
@@ -451,7 +455,7 @@ GameObject:
   - component: {fileID: 510609546}
   m_Layer: 0
   m_Name: knight
-  m_TagString: Untagged
+  m_TagString: Knight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -470,10 +474,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   trashPrefab: {fileID: 5290459231065880416, guid: 214945dd7671a5b82a3da17c5e6b402e, type: 3}
-  bloodPrefab: {fileID: 0}
-  spawnInterval: 1.5
   isBoss: 0
   bossHP: 100
+  attackRange: 1.5
+  knightDamage: 25
 --- !u!212 &510609543
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1303,7 +1307,7 @@ Transform:
   m_GameObject: {fileID: 1050996027}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4913937, y: 1.2329353, z: 0}
+  m_LocalPosition: {x: -3.63, y: 1.2329353, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
