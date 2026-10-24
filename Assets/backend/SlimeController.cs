@@ -1,15 +1,15 @@
 using UnityEngine;
-using TMPro; // Подключаем TextMeshPro (если используете обычный Text, замените на UnityEngine.UI и тип Text)
+using TMPro;
 
 public class SlimeController : MonoBehaviour
 {
     [Header("Здоровье и Мусор")]
     public int hp = 40;
-    public GameObject trashPrefab;        // Префаб мусора при смерти слайма
-    public int collectedTrashCount = 0;   // Счётчик собранного мусора
+    public GameObject trashPrefab;        
+    public int collectedTrashCount = 0;   
 
     [Header("Интерфейс (UI)")]
-    public TextMeshProUGUI trashText;     // Ссылка на текст с количеством мусора слева сверху
+    public TextMeshProUGUI trashText;     
 
     [Header("Движение Слайма")]
     public float moveSpeed = 5f;          
@@ -22,19 +22,22 @@ public class SlimeController : MonoBehaviour
     public LayerMask groundLayer;         
 
     private Rigidbody2D rb;
+    private Animator animator; // Ссылка на компонент Animator
     private bool isGrounded;
     private float horizontalInput;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        UpdateTrashUI(); // Обновляем текст при старте игры
+        animator = GetComponent<Animator>(); // Получаем Animator при старте
+        UpdateTrashUI(); 
     }
 
     void Update()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
 
+        // Управление прыжком + запуск анимации прыжка
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && isGrounded)
         {
             Jump();
@@ -52,8 +55,16 @@ public class SlimeController : MonoBehaviour
             isGrounded = true; 
         }
 
+        // Движение
         rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
 
+        // Передаем параметр Speed в Animator (используем абсолютное значение, чтобы ходьба в обе стороны давала положительную скорость)
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", Mathf.Abs(horizontalInput));
+        }
+
+        // Поворот спрайта в сторону движения
         if (horizontalInput > 0)
         {
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
@@ -67,6 +78,12 @@ public class SlimeController : MonoBehaviour
     void Jump()
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+
+        // Запускаем триггер прыжка в Animator
+        if (animator != null)
+        {
+            animator.SetTrigger("Jump");
+        }
     }
 
     public void TakeDamage(int damage)
@@ -90,16 +107,13 @@ public class SlimeController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // Метод для увеличения собранного мусора
     public void AddTrash(int amount = 1)
     {
         collectedTrashCount += amount;
         Debug.Log("Собрано мусора: " + collectedTrashCount);
-        
-        UpdateTrashUI(); // Сразу обновляем текст на экране
+        UpdateTrashUI(); 
     }
 
-    // Обновление текста на UI
     void UpdateTrashUI()
     {
         if (trashText != null)

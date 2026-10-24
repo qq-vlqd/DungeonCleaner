@@ -1,0 +1,754 @@
+fileFormatVersion: 2
+guid: 95f3292c959a7fb4b84f6590aa8aa556
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1342799468498050937
+    second: Jump_Indigo_32_0
+  - first:
+      213: 5689797547268001696
+    second: Jump_Indigo_32_1
+  - first:
+      213: -7168476019011329870
+    second: Jump_Indigo_32_2
+  - first:
+      213: 6367644950315056943
+    second: Jump_Indigo_32_3
+  - first:
+      213: -4861132247310735948
+    second: Jump_Indigo_32_4
+  - first:
+      213: 5136136478438630231
+    second: Jump_Indigo_32_5
+  - first:
+      213: -4231506637903297077
+    second: Jump_Indigo_32_6
+  - first:
+      213: 249633560925135630
+    second: Jump_Indigo_32_7
+  - first:
+      213: 4322592481727990578
+    second: Jump_Indigo_32_8
+  - first:
+      213: -6182755467725921878
+    second: Jump_Indigo_32_9
+  - first:
+      213: -2026476486119747075
+    second: Jump_Indigo_32_10
+  - first:
+      213: -8658289345790985097
+    second: Jump_Indigo_32_11
+  - first:
+      213: 3561741901272437828
+    second: Jump_Indigo_32_12
+  - first:
+      213: 963366771589273340
+    second: Jump_Indigo_32_13
+  - first:
+      213: -9168668308755426811
+    second: Jump_Indigo_32_14
+  - first:
+      213: 5616202086774018276
+    second: Jump_Indigo_32_15
+  - first:
+      213: 7547542479203105676
+    second: Jump_Indigo_32_16
+  - first:
+      213: -5108780988659706379
+    second: Jump_Indigo_32_17
+  - first:
+      213: 3681753094290121979
+    second: Jump_Indigo_32_18
+  - first:
+      213: -6916974746179439674
+    second: Jump_Indigo_32_19
+  - first:
+      213: 8619480674152109330
+    second: Jump_Indigo_32_20
+  - first:
+      213: -2079767344465280994
+    second: Jump_Indigo_32_21
+  - first:
+      213: -1675093380831639129
+    second: Jump_Indigo_32_22
+  - first:
+      213: 101168973168565841
+    second: Jump_Indigo_32_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Jump_Indigo_32_0
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 39
+        width: 12
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78027937ffa6d5de0800000000000000
+      internalID: -1342799468498050937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_1
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 43
+        width: 14
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0af4cc039b836fe40800000000000000
+      internalID: 5689797547268001696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_2
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 47
+        width: 16
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b06ce97a05748c90800000000000000
+      internalID: -7168476019011329870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_3
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 50
+        width: 16
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2fb657585b6e5850800000000000000
+      internalID: 6367644950315056943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_4
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 47
+        width: 16
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b5e8d8f9f9c98cb0800000000000000
+      internalID: -4861132247310735948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_5
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 43
+        width: 14
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 753a24b2ae8374740800000000000000
+      internalID: 5136136478438630231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_6
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 39
+        width: 12
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc5011fd12ba645c0800000000000000
+      internalID: -4231506637903297077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_7
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 31
+        width: 16
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0365faa660e67300800000000000000
+      internalID: 249633560925135630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_8
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 31
+        width: 16
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23bcb26c5feecfb30800000000000000
+      internalID: 4322592481727990578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_9
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 31
+        width: 18
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa1a715e8a0723aa0800000000000000
+      internalID: -6182755467725921878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_10
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 31
+        width: 18
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df196236f5280e3e0800000000000000
+      internalID: -2026476486119747075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_11
+      rect:
+        serializedVersion: 2
+        x: 359
+        y: 31
+        width: 18
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77c349da6b397d780800000000000000
+      internalID: -8658289345790985097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_12
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 7
+        width: 12
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 444d7f66369dd6130800000000000000
+      internalID: 3561741901272437828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_13
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 11
+        width: 14
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf65ef089f09e5d00800000000000000
+      internalID: 963366771589273340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_14
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 15
+        width: 16
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 502504930c852c080800000000000000
+      internalID: -9168668308755426811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_15
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 18
+        width: 16
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e019f0ca02c0fd40800000000000000
+      internalID: 5616202086774018276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_16
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 15
+        width: 16
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8b721075e14eb860800000000000000
+      internalID: 7547542479203105676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_17
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 11
+        width: 14
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f55baf12c6f919b0800000000000000
+      internalID: -5108780988659706379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_18
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 7
+        width: 12
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf4abd7bee6381330800000000000000
+      internalID: 3681753094290121979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_19
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 0
+        width: 16
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c370a5bd18f100a0800000000000000
+      internalID: -6916974746179439674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_20
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 0
+        width: 16
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2155e23510c8e9770800000000000000
+      internalID: 8619480674152109330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_21
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 0
+        width: 18
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1080b98e9e2323e0800000000000000
+      internalID: -2079767344465280994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_22
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 0
+        width: 18
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a90ce5f17fd0c8e0800000000000000
+      internalID: -1675093380831639129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Indigo_32_23
+      rect:
+        serializedVersion: 2
+        x: 359
+        y: 0
+        width: 18
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15ed00425ac676100800000000000000
+      internalID: 101168973168565841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Jump_Indigo_32_0: -1342799468498050937
+      Jump_Indigo_32_1: 5689797547268001696
+      Jump_Indigo_32_10: -2026476486119747075
+      Jump_Indigo_32_11: -8658289345790985097
+      Jump_Indigo_32_12: 3561741901272437828
+      Jump_Indigo_32_13: 963366771589273340
+      Jump_Indigo_32_14: -9168668308755426811
+      Jump_Indigo_32_15: 5616202086774018276
+      Jump_Indigo_32_16: 7547542479203105676
+      Jump_Indigo_32_17: -5108780988659706379
+      Jump_Indigo_32_18: 3681753094290121979
+      Jump_Indigo_32_19: -6916974746179439674
+      Jump_Indigo_32_2: -7168476019011329870
+      Jump_Indigo_32_20: 8619480674152109330
+      Jump_Indigo_32_21: -2079767344465280994
+      Jump_Indigo_32_22: -1675093380831639129
+      Jump_Indigo_32_23: 101168973168565841
+      Jump_Indigo_32_3: 6367644950315056943
+      Jump_Indigo_32_4: -4861132247310735948
+      Jump_Indigo_32_5: 5136136478438630231
+      Jump_Indigo_32_6: -4231506637903297077
+      Jump_Indigo_32_7: 249633560925135630
+      Jump_Indigo_32_8: 4322592481727990578
+      Jump_Indigo_32_9: -6182755467725921878
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

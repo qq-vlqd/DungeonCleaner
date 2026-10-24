@@ -18,29 +18,20 @@ public class Arrow : MonoBehaviour
         if (rb != null)
         {
             rb.gravityScale = 0f; 
-            
-            // ВАЖНО: Сразу задаем скорость при создании, чтобы стрела не висела на месте!
             rb.linearVelocity = transform.right * speed;
         }
-        else
-        {
-            Debug.LogError("ОШИБКА: У стрелы нет компонента Rigidbody2D!");
-        }
 
-        // Уничтожаем стрелу через время lifeTime, если никуда не попала
         Destroy(gameObject, lifeTime);
     }
 
     void FixedUpdate()
     {
-        // Поддерживаем скорость постоянной каждый кадр физики
         if (rb != null)
         {
             rb.linearVelocity = transform.right * speed;
         }
     }
 
-    // Обработка столкновений (поддерживает и Trigger, и обычный Collider)
     private void OnTriggerEnter2D(Collider2D collision)
     {
         HandleCollision(collision.gameObject);
@@ -53,12 +44,16 @@ public class Arrow : MonoBehaviour
 
     void HandleCollision(GameObject hitObject)
     {
-        // Игнорируем самого скелета-лучника и другие стрелы
         if (hitObject.CompareTag("Archer") || hitObject.CompareTag("Arrow") || hitObject.name.Contains("Skeleton")) return;
 
-        // 1. Попадание в стены или пол (Ground / Wall)
+        // 1. Попадание в стены, пол или слой Ground -> спавним мусор и уничтожаем стрелу
         if (hitObject.CompareTag("Ground") || hitObject.CompareTag("Wall") || hitObject.layer == LayerMask.NameToLayer("Ground"))
         {
+            if (trashPrefab != null)
+            {
+                Instantiate(trashPrefab, transform.position, Quaternion.identity);
+            }
+
             Destroy(gameObject);
             return;
         }
@@ -78,15 +73,11 @@ public class Arrow : MonoBehaviour
         // 3. Попадание в Слайма (Игрока)
         if (hitObject.CompareTag("Player") || hitObject.name.Contains("Slime") || hitObject.name.Contains("Player"))
         {
-            Debug.Log("УСПЕХ: Стрела попала в Слайма!");
-
-            // Спавним мусор
             if (trashPrefab != null)
             {
                 Instantiate(trashPrefab, hitObject.transform.position, Quaternion.identity);
             }
 
-            // Наносим урон
             SlimeController slime = hitObject.GetComponent<SlimeController>() ?? hitObject.GetComponentInParent<SlimeController>();
             if (slime != null)
             {

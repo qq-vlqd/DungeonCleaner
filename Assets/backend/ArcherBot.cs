@@ -7,10 +7,10 @@ public class ArcherBot : MonoBehaviour
     public GameObject trashPrefab;          // Мусор при смерти
 
     [Header("Настройки ИИ и Движения")]
-    public float moveSpeed = 3f;            // Скорость отступления/погони
+    public float moveSpeed = 3f;            // Скорость отступления
     public float detectionRange = 8f;       // Дистанция обнаружения
     public float attackRange = 6f;          // Дистанция стрельбы
-    public float safeDistance = 3f;         // Дистанция, ближе которой лучник начинает отбегать назад
+    public float safeDistance = 3f;         // Дистанция, ближе которой лучник отбегает назад
     public float attackCooldown = 2f;       
 
     [Header("Ссылки на стрельбу")]
@@ -34,7 +34,6 @@ public class ArcherBot : MonoBehaviour
 
     void Update()
     {
-        attackTimer += Time.deltaTime;
         FindTarget();
 
         if (currentTarget != null)
@@ -45,32 +44,40 @@ public class ArcherBot : MonoBehaviour
             // Поворот лицом к цели
             FlipToTarget(currentTarget.position);
 
-            if (distanceToTarget <= detectionRange && HasLineOfSight(currentTarget))
+            // Проверяем и дальность, и прямую видимость (преграды)
+            bool inRange = distanceToTarget <= detectionRange;
+            bool hasSight = HasLineOfSight(currentTarget);
+
+            if (inRange && hasSight)
             {
+                // Видимость ЕСТЬ — накапливаем таймер атаки
+                attackTimer += Time.deltaTime;
+
                 if (distanceToTarget < safeDistance)
                 {
-                    // Цель слишком близко — отбегаем назад!
+                    // Цель близко — отбегаем
                     MoveAway(directionX);
                 }
                 else if (distanceToTarget <= attackRange)
                 {
-                    // На дистанции атаки — останавливаемся и стреляем
+                    // На дистанции атаки — стоим и бьем
                     StopMoving();
 
                     if (attackTimer >= attackCooldown)
                     {
                         Shoot();
-                        attackTimer = 0f;
+                        attackTimer = 0f; 
                     }
                 }
                 else
                 {
-                    // Цель далеко, но в зоне видимости (можно при желании идти к ней, пока стоим)
                     StopMoving();
                 }
             }
             else
             {
+                // ПРЕГРАДА НА ПУТИ ИЛИ ЦЕЛИ НЕТ В ЗОНЕ ВИДИМОСТИ:
+                // Не накапливаем таймер атаки, чтобы скелет не стрелял сквозь стены
                 StopMoving();
             }
         }
@@ -87,14 +94,16 @@ public class ArcherBot : MonoBehaviour
         float distance = Vector2.Distance(startPos, target.position);
 
         Debug.DrawRay(startPos, direction * distance, Color.red);
+        
+        // Проверяем лучом, задевает ли он препятствия (слой obstacleLayer)
         RaycastHit2D hit = Physics2D.Raycast(startPos, direction, distance, obstacleLayer);
 
-        return hit.collider == null; // Видимость есть, если на пути нет препятствий
+        // Если hit.collider == null, значит, путь полностью чист
+        return hit.collider == null;
     }
 
     void MoveAway(float directionX)
     {
-        // Идем в противоположную от цели сторону
         float fleeDir = -Mathf.Sign(directionX);
         SetVelocityX(fleeDir * moveSpeed);
 
@@ -114,7 +123,6 @@ public class ArcherBot : MonoBehaviour
         }
     }
 
-    // Универсальный метод для работы со скоростью во всех версиях Unity
     void SetVelocityX(float velocityX)
     {
         if (rb != null)
@@ -125,18 +133,20 @@ public class ArcherBot : MonoBehaviour
 
     void Shoot()
     {
-        if (arrowPrefab == null) return;
-
-        // Запуск анимации атаки (убедитесь, что в Animator есть Trigger "Attack")
         if (animator != null)
         {
             animator.SetTrigger("Attack");
         }
+    }
+
+    // Вызывается из анимации атаки через Animation Event
+    public void SpawnArrowEvent()
+    {
+        if (arrowPrefab == null) return;
 
         Vector2 origin = shootPoint != null ? shootPoint.position : transform.position;
         GameObject arrowObj = Instantiate(arrowPrefab, origin, Quaternion.identity);
 
-        // Отключаем столкновение стрелы со стрелком
         Collider2D arrowCollider = arrowObj.GetComponent<Collider2D>();
         Collider2D[] myColliders = GetComponentsInChildren<Collider2D>();
         if (arrowCollider != null && myColliders.Length > 0)
