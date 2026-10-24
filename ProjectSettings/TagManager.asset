@@ -4,9 +4,11 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - trash
   - Knight
   - Archer
+  - Ground
+  - Ladder
+  - Trash
   layers:
   - Default
   - TransparentFX
@@ -14,8 +16,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Ground
+  - Arrow
   - 
   - 
   - 
