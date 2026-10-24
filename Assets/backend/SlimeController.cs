@@ -52,7 +52,7 @@ public class SlimeController : MonoBehaviour
             isGrounded = true; 
         }
 
-        rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(horizontalInput * moveSpeed * Upgrades.SpeedMultiplier, rb.linearVelocity.y);
 
         if (horizontalInput > 0)
         {
@@ -67,6 +67,15 @@ public class SlimeController : MonoBehaviour
     void Jump()
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+    }
+
+    bool coinsBanked;
+
+    public void BankCoins()
+    {
+        if (coinsBanked) return;          // чтобы не начислить дважды
+        coinsBanked = true;
+        Upgrades.Coins += Mathf.RoundToInt(collectedTrashCount * Upgrades.CoinMultiplier);
     }
 
     public void TakeDamage(int damage)
