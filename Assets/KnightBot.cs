@@ -4,28 +4,60 @@ public class KnightBot : MonoBehaviour
 {
     public float speed = 2f; 
     public GameObject trashPrefab; 
+    public GameObject bloodPrefab; 
     public float spawnInterval = 1.5f; 
+    
+    public bool isBoss = false; 
+    public int bossHP = 100; // Убедитесь, что эта переменная есть
 
     private Rigidbody2D rb;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        // Спавн мусора
-        InvokeRepeating("DropTrash", spawnInterval, spawnInterval);
+        InvokeRepeating("DropGore", spawnInterval, spawnInterval);
     }
 
     void FixedUpdate()
     {
-        // Двигаем рыцаря по физике направо, сохраняя его текущую скорость падения по Y
-        rb.linearVelocity = new Vector2(speed, rb.linearVelocity.y);
+        if (!isBoss)
+        {
+            rb.linearVelocity = new Vector2(speed, rb.linearVelocity.y);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(Mathf.Sin(Time.time) * speed, rb.linearVelocity.y);
+        }
     }
 
-    void DropTrash()
+    void DropGore()
     {
-        if (trashPrefab != null)
+        if (Random.value > 0.3f)
         {
-            Instantiate(trashPrefab, transform.position, Quaternion.identity);
+            if (trashPrefab != null) Instantiate(trashPrefab, transform.position, Quaternion.identity);
         }
+        else
+        {
+            if (bloodPrefab != null) Instantiate(bloodPrefab, transform.position, Quaternion.identity);
+        }
+    }
+
+    // <-- ДОБАВЬТЕ ЭТОТ МЕТОД СЮДА
+    public void TakeDamage(int damage)
+    {
+        bossHP -= damage;
+        Debug.Log("Рыцарь получил урон! HP: " + bossHP);
+        
+        if (bossHP <= 0)
+        {
+            WinGame();
+        }
+    }
+
+    void WinGame()
+    {
+        Debug.Log("Рыцарь повержен! Слайм надевает доспехи.");
+        CancelInvoke("DropGore");
+        Destroy(gameObject);
     }
 }
