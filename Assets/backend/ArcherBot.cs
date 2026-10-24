@@ -4,19 +4,33 @@ public class ArcherBot : MonoBehaviour
 {
     [Header("Здоровье и Мусор")]
     public int hp = 50;
-    public GameObject trashPrefab;        // Мусор, который останется после смерти
+    public GameObject trashPrefab;          // Мусор при смерти
 
-    [Header("Настройки Атаки")]
-    public float attackRange = 8f;        
-    public float attackCooldown = 2f;     
-    public GameObject arrowPrefab;        
-    public Transform shootPoint;          
+    [Header("Настройки ИИ и Движения")]
+    public float moveSpeed = 3f;            // Скорость отступления/погони
+    public float detectionRange = 8f;       // Дистанция обнаружения
+    public float attackRange = 6f;          // Дистанция стрельбы
+    public float safeDistance = 3f;         // Дистанция, ближе которой лучник начинает отбегать назад
+    public float attackCooldown = 2f;       
+
+    [Header("Ссылки на стрельбу")]
+    public GameObject arrowPrefab;          
+    public Transform shootPoint;            
 
     [Header("Проверка Видимости (ЛоС)")]
-    public LayerMask obstacleLayer;       
+    public LayerMask obstacleLayer;         
 
     private float attackTimer = 0f;
     private Transform currentTarget;
+    private Animator animator;
+    private Rigidbody2D rb;
+    private bool facingRight = true;
+
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     void Update()
     {
@@ -26,17 +40,43 @@ public class ArcherBot : MonoBehaviour
         if (currentTarget != null)
         {
             float distanceToTarget = Vector2.Distance(transform.position, currentTarget.position);
+            float directionX = currentTarget.position.x - transform.position.x;
 
-            if (distanceToTarget <= attackRange && HasLineOfSight(currentTarget))
+            // Поворот лицом к цели
+            FlipToTarget(currentTarget.position);
+
+            if (distanceToTarget <= detectionRange && HasLineOfSight(currentTarget))
             {
-                FlipToTarget(currentTarget.position);
-
-                if (attackTimer >= attackCooldown)
+                if (distanceToTarget < safeDistance)
                 {
-                    Shoot();
-                    attackTimer = 0f;
+                    // Цель слишком близко — отбегаем назад!
+                    MoveAway(directionX);
+                }
+                else if (distanceToTarget <= attackRange)
+                {
+                    // На дистанции атаки — останавливаемся и стреляем
+                    StopMoving();
+
+                    if (attackTimer >= attackCooldown)
+                    {
+                        Shoot();
+                        attackTimer = 0f;
+                    }
+                }
+                else
+                {
+                    // Цель далеко, но в зоне видимости (можно при желании идти к ней, пока стоим)
+                    StopMoving();
                 }
             }
+            else
+            {
+                StopMoving();
+            }
+        }
+        else
+        {
+            StopMoving();
         }
     }
 
@@ -49,17 +89,54 @@ public class ArcherBot : MonoBehaviour
         Debug.DrawRay(startPos, direction * distance, Color.red);
         RaycastHit2D hit = Physics2D.Raycast(startPos, direction, distance, obstacleLayer);
 
-        return hit.collider == null; // Если ничего не задело, видимость есть
+        return hit.collider == null; // Видимость есть, если на пути нет препятствий
+    }
+
+    void MoveAway(float directionX)
+    {
+        // Идем в противоположную от цели сторону
+        float fleeDir = -Mathf.Sign(directionX);
+        SetVelocityX(fleeDir * moveSpeed);
+
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", moveSpeed);
+        }
+    }
+
+    void StopMoving()
+    {
+        SetVelocityX(0f);
+
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", 0f);
+        }
+    }
+
+    // Универсальный метод для работы со скоростью во всех версиях Unity
+    void SetVelocityX(float velocityX)
+    {
+        if (rb != null)
+        {
+            rb.linearVelocity = new Vector2(velocityX, rb.linearVelocity.y);
+        }
     }
 
     void Shoot()
     {
         if (arrowPrefab == null) return;
 
+        // Запуск анимации атаки (убедитесь, что в Animator есть Trigger "Attack")
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack");
+        }
+
         Vector2 origin = shootPoint != null ? shootPoint.position : transform.position;
         GameObject arrowObj = Instantiate(arrowPrefab, origin, Quaternion.identity);
 
-        // Отключаем столкновение со скелетом
+        // Отключаем столкновение стрелы со стрелком
         Collider2D arrowCollider = arrowObj.GetComponent<Collider2D>();
         Collider2D[] myColliders = GetComponentsInChildren<Collider2D>();
         if (arrowCollider != null && myColliders.Length > 0)
@@ -118,10 +195,22 @@ public class ArcherBot : MonoBehaviour
 
     void FlipToTarget(Vector3 targetPos)
     {
-        if (targetPos.x > transform.position.x)
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        else if (targetPos.x < transform.position.x)
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        if (targetPos.x > transform.position.x && !facingRight)
+        {
+            FacingFlip();
+        }
+        else if (targetPos.x < transform.position.x && facingRight)
+        {
+            FacingFlip();
+        }
+    }
+
+    void FacingFlip()
+    {
+        facingRight = !facingRight;
+        Vector3 Scaler = transform.localScale;
+        Scaler.x *= -1;
+        transform.localScale = Scaler;
     }
 
     public void TakeDamage(int damage)
@@ -140,7 +229,6 @@ public class ArcherBot : MonoBehaviour
 
     void Die()
     {
-        // Оставляем мусор на месте смерти скелета
         if (trashPrefab != null)
         {
             Instantiate(trashPrefab, transform.position, Quaternion.identity);

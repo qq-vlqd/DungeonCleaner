@@ -1,0 +1,2730 @@
+fileFormatVersion: 2
+guid: 141fb34a5f0744b459966b40c94e9558
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7389136213925610003
+    second: skeleton bow_0
+  - first:
+      213: -1335575235867831549
+    second: skeleton bow_1
+  - first:
+      213: -6161780319837144456
+    second: skeleton bow_2
+  - first:
+      213: -8832400317728930643
+    second: skeleton bow_3
+  - first:
+      213: 4537773223775068764
+    second: skeleton bow_4
+  - first:
+      213: 500425978911610190
+    second: skeleton bow_5
+  - first:
+      213: -730643068924395213
+    second: skeleton bow_6
+  - first:
+      213: 2594568201595315792
+    second: skeleton bow_7
+  - first:
+      213: -1669293676640585988
+    second: skeleton bow_8
+  - first:
+      213: -2721117999256306561
+    second: skeleton bow_9
+  - first:
+      213: -8261243085379390603
+    second: skeleton bow_10
+  - first:
+      213: 5770914489687184921
+    second: skeleton bow_11
+  - first:
+      213: 8131893118441594490
+    second: skeleton bow_12
+  - first:
+      213: -9183411628367850441
+    second: skeleton bow_13
+  - first:
+      213: -4954517154560662141
+    second: skeleton bow_14
+  - first:
+      213: 9122166516911796439
+    second: skeleton bow_15
+  - first:
+      213: 8611197305317078875
+    second: skeleton bow_16
+  - first:
+      213: -1006222904490526622
+    second: skeleton bow_17
+  - first:
+      213: -4009089443112778468
+    second: skeleton bow_18
+  - first:
+      213: -7772084971346540075
+    second: skeleton bow_19
+  - first:
+      213: -944713214275606876
+    second: skeleton bow_20
+  - first:
+      213: 1697471518856227803
+    second: skeleton bow_21
+  - first:
+      213: -1481348705749484723
+    second: skeleton bow_22
+  - first:
+      213: -5596591305664254275
+    second: skeleton bow_23
+  - first:
+      213: 4450844871903501467
+    second: skeleton bow_24
+  - first:
+      213: -1407543055194604268
+    second: skeleton bow_25
+  - first:
+      213: 8775154954890873692
+    second: skeleton bow_26
+  - first:
+      213: 8802253239489714479
+    second: skeleton bow_27
+  - first:
+      213: -4725704975178418268
+    second: skeleton bow_28
+  - first:
+      213: -3370364405483794322
+    second: skeleton bow_29
+  - first:
+      213: 9218844169079331093
+    second: skeleton bow_30
+  - first:
+      213: 5856065430981682134
+    second: skeleton bow_31
+  - first:
+      213: -1537026441534960912
+    second: skeleton bow_32
+  - first:
+      213: -1628437786442600812
+    second: skeleton bow_33
+  - first:
+      213: -1870837106336716538
+    second: skeleton bow_34
+  - first:
+      213: -3518086582881335399
+    second: skeleton bow_35
+  - first:
+      213: 7760467304484319155
+    second: skeleton bow_36
+  - first:
+      213: 4190419204682433800
+    second: skeleton bow_37
+  - first:
+      213: 6405899366721863821
+    second: skeleton bow_38
+  - first:
+      213: -2863368456415462115
+    second: skeleton bow_39
+  - first:
+      213: 3662076764347004157
+    second: skeleton bow_40
+  - first:
+      213: 9101815820294409985
+    second: skeleton bow_41
+  - first:
+      213: -820478434965891837
+    second: skeleton bow_42
+  - first:
+      213: -7480663696031345261
+    second: skeleton bow_43
+  - first:
+      213: -6157137537058401288
+    second: skeleton bow_44
+  - first:
+      213: -5342785358990155815
+    second: skeleton bow_45
+  - first:
+      213: 8414581839660162938
+    second: skeleton bow_46
+  - first:
+      213: 4432829942147448633
+    second: skeleton bow_47
+  - first:
+      213: -1699676186466895756
+    second: skeleton bow_48
+  - first:
+      213: 6855860279077600157
+    second: skeleton bow_49
+  - first:
+      213: 1607751436521134700
+    second: skeleton bow_50
+  - first:
+      213: -7048371858881717401
+    second: skeleton bow_51
+  - first:
+      213: -3588940354682988398
+    second: skeleton bow_52
+  - first:
+      213: -5457194073229644698
+    second: skeleton bow_53
+  - first:
+      213: -8030708132989490438
+    second: skeleton bow_54
+  - first:
+      213: 6362199342350790877
+    second: skeleton bow_55
+  - first:
+      213: -7015986637052059868
+    second: skeleton bow_56
+  - first:
+      213: 7941331180121985726
+    second: skeleton bow_57
+  - first:
+      213: 4681294858065347497
+    second: skeleton bow_58
+  - first:
+      213: 2203429985893795140
+    second: skeleton bow_59
+  - first:
+      213: -7709391448650623989
+    second: skeleton bow_60
+  - first:
+      213: 8520569111076166070
+    second: skeleton bow_61
+  - first:
+      213: -5226183857082991657
+    second: skeleton bow_62
+  - first:
+      213: 4214417036322862619
+    second: skeleton bow_63
+  - first:
+      213: -1712394231105065557
+    second: skeleton bow_64
+  - first:
+      213: -5845350197353873610
+    second: skeleton bow_65
+  - first:
+      213: 9100223523169387615
+    second: skeleton bow_66
+  - first:
+      213: -2422907468344456827
+    second: skeleton bow_67
+  - first:
+      213: 4221062232272948727
+    second: skeleton bow_68
+  - first:
+      213: 2804298376504569118
+    second: skeleton bow_69
+  - first:
+      213: 625772239017103989
+    second: skeleton bow_70
+  - first:
+      213: -1937389598866561455
+    second: skeleton bow_71
+  - first:
+      213: -4930866627020826490
+    second: skeleton bow_72
+  - first:
+      213: -1176014318949440296
+    second: skeleton bow_73
+  - first:
+      213: -7748250135187878630
+    second: skeleton bow_74
+  - first:
+      213: 3706532684449927214
+    second: skeleton bow_75
+  - first:
+      213: -7434965735275413833
+    second: skeleton bow_76
+  - first:
+      213: -8444474757023100018
+    second: skeleton bow_77
+  - first:
+      213: 4326665313986994872
+    second: skeleton bow_78
+  - first:
+      213: 4097878491414149167
+    second: skeleton bow_79
+  - first:
+      213: -4958549354027620047
+    second: skeleton bow_80
+  - first:
+      213: -3649802288756830113
+    second: skeleton bow_81
+  - first:
+      213: -5837053387515478744
+    second: skeleton bow_82
+  - first:
+      213: -7521919714426135074
+    second: skeleton bow_83
+  - first:
+      213: 8007333249465095673
+    second: skeleton bow_84
+  - first:
+      213: 6070275200920819739
+    second: skeleton bow_85
+  - first:
+      213: -4281651872017300395
+    second: skeleton bow_86
+  - first:
+      213: -2225619978973487670
+    second: skeleton bow_87
+  - first:
+      213: 8875403219530654520
+    second: skeleton bow_88
+  - first:
+      213: 2122462651722929593
+    second: skeleton bow_89
+  - first:
+      213: 430082412576726729
+    second: skeleton bow_90
+  - first:
+      213: -1269375086296494033
+    second: skeleton bow_91
+  - first:
+      213: -8387044828950350735
+    second: skeleton bow_92
+  - first:
+      213: -791853614270331851
+    second: skeleton bow_93
+  - first:
+      213: -882124898751960035
+    second: skeleton bow_94
+  - first:
+      213: -872845587067726184
+    second: skeleton bow_95
+  - first:
+      213: -762992595360672621
+    second: skeleton bow_96
+  - first:
+      213: 2549862377391770048
+    second: skeleton bow_97
+  - first:
+      213: 9034986063375209287
+    second: skeleton bow_98
+  - first:
+      213: 4030771886987719797
+    second: skeleton bow_99
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: skeleton bow_0
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 927
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 312c20cbc3c7b8660800000000000000
+      internalID: 7389136213925610003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_1
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 926
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3031a4f2665177de0800000000000000
+      internalID: -1335575235867831549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_2
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 926
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87a3d141275fc7aa0800000000000000
+      internalID: -6161780319837144456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_3
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 880
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da448b305b20d6580800000000000000
+      internalID: -8832400317728930643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_4
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 879
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c52646274b869fe30800000000000000
+      internalID: 4537773223775068764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_5
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 879
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e455765c6ced1f600800000000000000
+      internalID: 500425978911610190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_6
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 832
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 331092bfffb3cd5f0800000000000000
+      internalID: -730643068924395213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_7
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 831
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 056ec916802c10420800000000000000
+      internalID: 2594568201595315792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_8
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 831
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf63802de3a75d8e0800000000000000
+      internalID: -1669293676640585988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_9
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 783
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7cf766c895ac3ad0800000000000000
+      internalID: -2721117999256306561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_10
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 782
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5733fcc0f2b2a5d80800000000000000
+      internalID: -8261243085379390603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_11
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 782
+        width: 17
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91695fa1728661050800000000000000
+      internalID: 5770914489687184921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_12
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 735
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7e9724e4b94ad070800000000000000
+      internalID: 8131893118441594490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_13
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 736
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73451f0a7c7fd8080800000000000000
+      internalID: -9183411628367850441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_14
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 735
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38525d8e5e40e3bb0800000000000000
+      internalID: -4954517154560662141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_15
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 734
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d07d76ad12789e70800000000000000
+      internalID: 9122166516911796439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_16
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 735
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b57b93a335e118770800000000000000
+      internalID: 8611197305317078875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_17
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 736
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 268fafc799d2902f0800000000000000
+      internalID: -1006222904490526622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_18
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 735
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c158e7e746adc58c0800000000000000
+      internalID: -4009089443112778468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_19
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 734
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d9ccb695e1042490800000000000000
+      internalID: -7772084971346540075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_20
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 688
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a62c704654b3e2f0800000000000000
+      internalID: -944713214275606876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_21
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 688
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdba4c15a51ae8710800000000000000
+      internalID: 1697471518856227803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_22
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 688
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4b315d5331317be0800000000000000
+      internalID: -1481348705749484723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_23
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 687
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbea7d80cd9e452b0800000000000000
+      internalID: -5596591305664254275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_24
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 688
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9c5d2454d394cd30800000000000000
+      internalID: 4450844871903501467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_25
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 688
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41dbe0d7c07677ce0800000000000000
+      internalID: -1407543055194604268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_26
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 688
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5b874f40fc97c970800000000000000
+      internalID: 8775154954890873692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_27
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 687
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f29d0da5fa2e72a70800000000000000
+      internalID: 8802253239489714479
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_28
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 640
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a7b139ec5cea6eb0800000000000000
+      internalID: -4725704975178418268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_29
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 640
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e60948f1e6f0a31d0800000000000000
+      internalID: -3370364405483794322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_30
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 640
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51997a1ade9efef70800000000000000
+      internalID: 9218844169079331093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_31
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 639
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d3ab139b7ce44150800000000000000
+      internalID: 5856065430981682134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_32
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 640
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fa0ded48926baae0800000000000000
+      internalID: -1537026441534960912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_33
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 640
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49ee3480670a669e0800000000000000
+      internalID: -1628437786442600812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_34
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 640
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6092e2c50937906e0800000000000000
+      internalID: -1870837106336716538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_35
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 639
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9974a4a74ee3d2fc0800000000000000
+      internalID: -3518086582881335399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_36
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 591
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bf22de85e7b2bb60800000000000000
+      internalID: 7760467304484319155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_37
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 592
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 805421b901c572a30800000000000000
+      internalID: 4190419204682433800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_38
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 591
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d804b5cb88356e850800000000000000
+      internalID: 6405899366721863821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_39
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 590
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1d3c464f854348d0800000000000000
+      internalID: -2863368456415462115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_40
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 591
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df47d172a6f42d230800000000000000
+      internalID: 3662076764347004157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_41
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 592
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10fcdabd345205e70800000000000000
+      internalID: 9101815820294409985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_42
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 591
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3055df1e5331d94f0800000000000000
+      internalID: -820478434965891837
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_43
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 590
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39514e1b0085f2890800000000000000
+      internalID: -7480663696031345261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_44
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 538
+        width: 20
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f3196e28047d8aa0800000000000000
+      internalID: -6157137537058401288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_45
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 537
+        width: 20
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9dfdb36f50d9ad5b0800000000000000
+      internalID: -5342785358990155815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_46
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 540
+        width: 18
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7f956ec99996c470800000000000000
+      internalID: 8414581839660162938
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_47
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 543
+        width: 20
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93ff963a853948d30800000000000000
+      internalID: 4432829942147448633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_48
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 544
+        width: 20
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 478337083898968e0800000000000000
+      internalID: -1699676186466895756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_49
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 496
+        width: 19
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9b71249998e42f50800000000000000
+      internalID: 6855860279077600157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_50
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 496
+        width: 25
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6a57fcc961ef4610800000000000000
+      internalID: 1607751436521134700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_51
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 496
+        width: 22
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76bde7263272f2e90800000000000000
+      internalID: -7048371858881717401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_52
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 496
+        width: 20
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2985e0f23c5813ec0800000000000000
+      internalID: -3588940354682988398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_53
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 496
+        width: 20
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66ca7c267e62444b0800000000000000
+      internalID: -5457194073229644698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_54
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 448
+        width: 19
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afa225660813d8090800000000000000
+      internalID: -8030708132989490438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_55
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 448
+        width: 25
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd0fa0fe7921b4850800000000000000
+      internalID: 6362199342350790877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_56
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 448
+        width: 22
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42fdf9d635532ae90800000000000000
+      internalID: -7015986637052059868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_57
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 448
+        width: 20
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb297e222a6453e60800000000000000
+      internalID: 7941331180121985726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_58
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 448
+        width: 20
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a309dfeedc47f040800000000000000
+      internalID: 4681294858065347497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_59
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 400
+        width: 20
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 445c4acd5e7249e10800000000000000
+      internalID: 2203429985893795140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_60
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 400
+        width: 20
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b04deb4d25db20590800000000000000
+      internalID: -7709391448650623989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_61
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 400
+        width: 18
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b95cdd66742f3670800000000000000
+      internalID: 8520569111076166070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_62
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 400
+        width: 20
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7dbffa3b87dd877b0800000000000000
+      internalID: -5226183857082991657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_63
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 400
+        width: 20
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b16f06137fd9c7a30800000000000000
+      internalID: 4214417036322862619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_64
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 351
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: baded8bf48a5c38e0800000000000000
+      internalID: -1712394231105065557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_65
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 351
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63f76fa27f421eea0800000000000000
+      internalID: -5845350197353873610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_66
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 351
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f544a2b441d7a4e70800000000000000
+      internalID: 9100223523169387615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_67
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 351
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58900b1ae7a106ed0800000000000000
+      internalID: -2422907468344456827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_68
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 304
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fd42717cb9349a30800000000000000
+      internalID: 4221062232272948727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_69
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 304
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1d62cff38edae620800000000000000
+      internalID: 2804298376504569118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_70
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 304
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5725ae039803fa800800000000000000
+      internalID: 625772239017103989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_71
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 304
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 156a500bc620d15e0800000000000000
+      internalID: -1937389598866561455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_72
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 256
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68858957dea029bb0800000000000000
+      internalID: -4930866627020826490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_73
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 256
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d4ee3c2535fdafe0800000000000000
+      internalID: -1176014318949440296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_74
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 256
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1d0145dd8fa87490800000000000000
+      internalID: -7748250135187878630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_75
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 256
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e205305a6df307330800000000000000
+      internalID: 3706532684449927214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_76
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 207
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7be35bf4e02b1d890800000000000000
+      internalID: -7434965735275413833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_77
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 207
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8392e003f23fca80800000000000000
+      internalID: -8444474757023100018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_78
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 207
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b2e23eed276b0c30800000000000000
+      internalID: 4326665313986994872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_79
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 207
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f283475c6c69ed830800000000000000
+      internalID: 4097878491414149167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_80
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 159
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 139e0ff42a1bf2bb0800000000000000
+      internalID: -4958549354027620047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_81
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 159
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f50dd36e72c495dc0800000000000000
+      internalID: -3649802288756830113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_82
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 158
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82d362ebede9efea0800000000000000
+      internalID: -5837053387515478744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_83
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 156
+        width: 20
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: edd5f906fd5cc9790800000000000000
+      internalID: -7521919714426135074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_84
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 154
+        width: 20
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f59a8c6a23cf1f60800000000000000
+      internalID: 8007333249465095673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_85
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 112
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b189fbf2223fd3450800000000000000
+      internalID: 6070275200920819739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_86
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 112
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 554c58cbe448494c0800000000000000
+      internalID: -4281651872017300395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_87
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 111
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acdd544cb620d11e0800000000000000
+      internalID: -2225619978973487670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_88
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 110
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 833ab7a4434cb2b70800000000000000
+      internalID: 8875403219530654520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_89
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 110
+        width: 17
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b59af45980847d10800000000000000
+      internalID: 2122462651722929593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_90
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 64
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ce57c1fca5f7f500800000000000000
+      internalID: 430082412576726729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_91
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f20119e9516426ee0800000000000000
+      internalID: -1269375086296494033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_92
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 63
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 174332f1a2b3b9b80800000000000000
+      internalID: -8387044828950350735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_93
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 62
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 534ce4f4555c205f0800000000000000
+      internalID: -791853614270331851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_94
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 62
+        width: 17
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1cac5a041012c3f0800000000000000
+      internalID: -882124898751960035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_95
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 15
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8969f07209703e3f0800000000000000
+      internalID: -872845587067726184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_96
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 15
+        width: 17
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 394164be64e4965f0800000000000000
+      internalID: -762992595360672621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_97
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 14
+        width: 17
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c9c19e825ee26320800000000000000
+      internalID: 2549862377391770048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_98
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 14
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 743951a84f7b26d70800000000000000
+      internalID: 9034986063375209287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skeleton bow_99
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 14
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 574b88edcad20f730800000000000000
+      internalID: 4030771886987719797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      skeleton bow_0: 7389136213925610003
+      skeleton bow_1: -1335575235867831549
+      skeleton bow_10: -8261243085379390603
+      skeleton bow_11: 5770914489687184921
+      skeleton bow_12: 8131893118441594490
+      skeleton bow_13: -9183411628367850441
+      skeleton bow_14: -4954517154560662141
+      skeleton bow_15: 9122166516911796439
+      skeleton bow_16: 8611197305317078875
+      skeleton bow_17: -1006222904490526622
+      skeleton bow_18: -4009089443112778468
+      skeleton bow_19: -7772084971346540075
+      skeleton bow_2: -6161780319837144456
+      skeleton bow_20: -944713214275606876
+      skeleton bow_21: 1697471518856227803
+      skeleton bow_22: -1481348705749484723
+      skeleton bow_23: -5596591305664254275
+      skeleton bow_24: 4450844871903501467
+      skeleton bow_25: -1407543055194604268
+      skeleton bow_26: 8775154954890873692
+      skeleton bow_27: 8802253239489714479
+      skeleton bow_28: -4725704975178418268
+      skeleton bow_29: -3370364405483794322
+      skeleton bow_3: -8832400317728930643
+      skeleton bow_30: 9218844169079331093
+      skeleton bow_31: 5856065430981682134
+      skeleton bow_32: -1537026441534960912
+      skeleton bow_33: -1628437786442600812
+      skeleton bow_34: -1870837106336716538
+      skeleton bow_35: -3518086582881335399
+      skeleton bow_36: 7760467304484319155
+      skeleton bow_37: 4190419204682433800
+      skeleton bow_38: 6405899366721863821
+      skeleton bow_39: -2863368456415462115
+      skeleton bow_4: 4537773223775068764
+      skeleton bow_40: 3662076764347004157
+      skeleton bow_41: 9101815820294409985
+      skeleton bow_42: -820478434965891837
+      skeleton bow_43: -7480663696031345261
+      skeleton bow_44: -6157137537058401288
+      skeleton bow_45: -5342785358990155815
+      skeleton bow_46: 8414581839660162938
+      skeleton bow_47: 4432829942147448633
+      skeleton bow_48: -1699676186466895756
+      skeleton bow_49: 6855860279077600157
+      skeleton bow_5: 500425978911610190
+      skeleton bow_50: 1607751436521134700
+      skeleton bow_51: -7048371858881717401
+      skeleton bow_52: -3588940354682988398
+      skeleton bow_53: -5457194073229644698
+      skeleton bow_54: -8030708132989490438
+      skeleton bow_55: 6362199342350790877
+      skeleton bow_56: -7015986637052059868
+      skeleton bow_57: 7941331180121985726
+      skeleton bow_58: 4681294858065347497
+      skeleton bow_59: 2203429985893795140
+      skeleton bow_6: -730643068924395213
+      skeleton bow_60: -7709391448650623989
+      skeleton bow_61: 8520569111076166070
+      skeleton bow_62: -5226183857082991657
+      skeleton bow_63: 4214417036322862619
+      skeleton bow_64: -1712394231105065557
+      skeleton bow_65: -5845350197353873610
+      skeleton bow_66: 9100223523169387615
+      skeleton bow_67: -2422907468344456827
+      skeleton bow_68: 4221062232272948727
+      skeleton bow_69: 2804298376504569118
+      skeleton bow_7: 2594568201595315792
+      skeleton bow_70: 625772239017103989
+      skeleton bow_71: -1937389598866561455
+      skeleton bow_72: -4930866627020826490
+      skeleton bow_73: -1176014318949440296
+      skeleton bow_74: -7748250135187878630
+      skeleton bow_75: 3706532684449927214
+      skeleton bow_76: -7434965735275413833
+      skeleton bow_77: -8444474757023100018
+      skeleton bow_78: 4326665313986994872
+      skeleton bow_79: 4097878491414149167
+      skeleton bow_8: -1669293676640585988
+      skeleton bow_80: -4958549354027620047
+      skeleton bow_81: -3649802288756830113
+      skeleton bow_82: -5837053387515478744
+      skeleton bow_83: -7521919714426135074
+      skeleton bow_84: 8007333249465095673
+      skeleton bow_85: 6070275200920819739
+      skeleton bow_86: -4281651872017300395
+      skeleton bow_87: -2225619978973487670
+      skeleton bow_88: 8875403219530654520
+      skeleton bow_89: 2122462651722929593
+      skeleton bow_9: -2721117999256306561
+      skeleton bow_90: 430082412576726729
+      skeleton bow_91: -1269375086296494033
+      skeleton bow_92: -8387044828950350735
+      skeleton bow_93: -791853614270331851
+      skeleton bow_94: -882124898751960035
+      skeleton bow_95: -872845587067726184
+      skeleton bow_96: -762992595360672621
+      skeleton bow_97: 2549862377391770048
+      skeleton bow_98: 9034986063375209287
+      skeleton bow_99: 4030771886987719797
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

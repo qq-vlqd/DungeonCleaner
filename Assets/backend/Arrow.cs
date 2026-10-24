@@ -4,11 +4,11 @@ public class Arrow : MonoBehaviour
 {
     [Header("Настройки Стрелы")]
     public int damage = 20;
-    public float speed = 12f;         
-    public float lifeTime = 5f;       
+    public float speed = 15f;        
+    public float lifeTime = 5f;      
 
     [Header("Префаб Мусора")]
-    public GameObject trashPrefab;    // ВАЖНО: перетащите префаб сюда в инспекторе!
+    public GameObject trashPrefab;   // Перетащите префаб мусора сюда в инспекторе!
 
     private Rigidbody2D rb;
 
@@ -18,33 +18,54 @@ public class Arrow : MonoBehaviour
         if (rb != null)
         {
             rb.gravityScale = 0f; 
+            
+            // ВАЖНО: Сразу задаем скорость при создании, чтобы стрела не висела на месте!
+            rb.linearVelocity = transform.right * speed;
+        }
+        else
+        {
+            Debug.LogError("ОШИБКА: У стрелы нет компонента Rigidbody2D!");
         }
 
+        // Уничтожаем стрелу через время lifeTime, если никуда не попала
         Destroy(gameObject, lifeTime);
     }
 
     void FixedUpdate()
     {
+        // Поддерживаем скорость постоянной каждый кадр физики
         if (rb != null)
         {
             rb.linearVelocity = transform.right * speed;
         }
     }
 
+    // Обработка столкновений (поддерживает и Trigger, и обычный Collider)
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Archer") || collision.CompareTag("Arrow")) return;
+        HandleCollision(collision.gameObject);
+    }
 
-        // Попадание в стены или пол
-        if (collision.CompareTag("Ground") || collision.CompareTag("Wall"))
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        HandleCollision(collision.gameObject);
+    }
+
+    void HandleCollision(GameObject hitObject)
+    {
+        // Игнорируем самого скелета-лучника и другие стрелы
+        if (hitObject.CompareTag("Archer") || hitObject.CompareTag("Arrow") || hitObject.name.Contains("Skeleton")) return;
+
+        // 1. Попадание в стены или пол (Ground / Wall)
+        if (hitObject.CompareTag("Ground") || hitObject.CompareTag("Wall") || hitObject.layer == LayerMask.NameToLayer("Ground"))
         {
             Destroy(gameObject);
             return;
         }
 
-        // Попадание в Рыцаря
-        KnightBot knight = collision.GetComponent<KnightBot>() ?? collision.GetComponentInParent<KnightBot>();
-        if (knight != null || collision.CompareTag("Knight"))
+        // 2. Попадание в Рыцаря
+        KnightBot knight = hitObject.GetComponent<KnightBot>() ?? hitObject.GetComponentInParent<KnightBot>();
+        if (knight != null || hitObject.CompareTag("Knight"))
         {
             if (knight != null)
             {
@@ -54,33 +75,28 @@ public class Arrow : MonoBehaviour
             return;
         }
 
-        // Попадание в Слайма (Игрока)
-        if (collision.CompareTag("Player") || collision.name.Contains("Slime") || collision.name.Contains("Player"))
+        // 3. Попадание в Слайма (Игрока)
+        if (hitObject.CompareTag("Player") || hitObject.name.Contains("Slime") || hitObject.name.Contains("Player"))
         {
             Debug.Log("УСПЕХ: Стрела попала в Слайма!");
 
-            // 1. Всегда спавним мусор в точке попадания / позиции слайма
+            // Спавним мусор
             if (trashPrefab != null)
             {
-                Instantiate(trashPrefab, collision.transform.position, Quaternion.identity);
-            }
-            else
-            {
-                Debug.LogWarning("ВНИМАНИЕ: У стрелы не назначен Trash Prefab в Inspector!");
+                Instantiate(trashPrefab, hitObject.transform.position, Quaternion.identity);
             }
 
-            // 2. Наносим урон слайму через его контроллер
-            SlimeController slime = collision.GetComponent<SlimeController>() ?? collision.GetComponentInParent<SlimeController>();
+            // Наносим урон
+            SlimeController slime = hitObject.GetComponent<SlimeController>() ?? hitObject.GetComponentInParent<SlimeController>();
             if (slime != null)
             {
                 slime.TakeDamage(damage);
             }
             else
             {
-                Destroy(collision.gameObject);
+                Destroy(hitObject);
             }
 
-            // 3. Уничтожаем стрелу
             Destroy(gameObject);
             return;
         }
