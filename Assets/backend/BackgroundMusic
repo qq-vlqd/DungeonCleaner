@@ -1,0 +1,20 @@
+using UnityEngine;
+
+public class BGM : MonoBehaviour
+{
+    private static BGM instance;
+
+    void Awake()
+    {
+        // Проверяем, существует ли уже такой объект на другой сцене
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject); // Не удалять этот объект при загрузке новой сцены
+        }
+        else
+        {
+            Destroy(gameObject); // Если дубликат уже есть, уничтожаем этот новый
+        }
+    }
+}

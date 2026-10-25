@@ -4,35 +4,53 @@ public class ArcherBot : MonoBehaviour
 {
     [Header("Здоровье и Мусор")]
     public int hp = 50;
-    public GameObject trashPrefab;          // Мусор при смерти
+    public GameObject trashPrefab;              // Мусор при смерти
 
     [Header("Настройки ИИ и Движения")]
-    public float moveSpeed = 3f;            // Скорость отступления
-    public float detectionRange = 8f;       // Дистанция обнаружения
-    public float attackRange = 6f;          // Дистанция стрельбы
-    public float safeDistance = 3f;         // Дистанция, ближе которой лучник отбегает назад
+    public float moveSpeed = 3f;                // Скорость отступления
+    public float detectionRange = 8f;           // Дистанция обнаружения
+    public float attackRange = 6f;              // Дистанция стрельбы
+    public float safeDistance = 3f;             // Дистанция, ближе которой лук отбегает назад
     public float attackCooldown = 2f; 
 
     [Header("Ссылки на стрельбу")]
     public GameObject arrowPrefab;          
-    public Transform shootPoint;            
+    public Transform shootPoint;              
 
     [Header("Проверка Видимости (ЛоС)")]
     public LayerMask obstacleLayer;         
+
+    [Header("Звуки и Громкость")]
+    public AudioClip shootSound;                // Звук выстрела
+    [Range(0f, 1f)] public float shootVolume = 1f;
+
+    public AudioClip deathSound;                // Звук смерти
+    [Range(0f, 1f)] public float deathVolume = 1f;
+
+    public AudioClip footstepSound;             // Звук шага
+    [Range(0f, 1f)] public float footstepVolume = 1f;
 
     private float attackTimer = 0f;
     private Transform currentTarget;
     private Animator animator;
     private Rigidbody2D rb;
-    private Collider2D col;                 // Ссылка на коллайдер
+    private Collider2D col;                     // Ссылка на коллайдер
+    private AudioSource audioSource;            // Компонент звука
     private bool facingRight = true;
-    private bool isDead = false;            // Флаг для проверки состояния смерти
+    private bool isDead = false;                // Флаг для проверки состояния смерти
 
     void Start()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
+
+        // Автоматически находим компонент Audio Source на этом же объекте или добавляем его
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     void Update()
@@ -174,6 +192,34 @@ public class ArcherBot : MonoBehaviour
         }
     }
 
+    // ==========================================
+    // МЕТОДЫ ЗВУКОВ ДЛЯ ANIMATION EVENTS
+    // ==========================================
+    public void PlayShootSound()
+    {
+        if (audioSource != null && shootSound != null)
+        {
+            audioSource.PlayOneShot(shootSound, shootVolume);
+        }
+    }
+
+    public void PlayDeathSound()
+    {
+        if (audioSource != null && deathSound != null)
+        {
+            audioSource.PlayOneShot(deathSound, deathVolume);
+        }
+    }
+
+    public void PlayFootstepSound()
+    {
+        if (audioSource != null && footstepSound != null)
+        {
+            audioSource.PlayOneShot(footstepSound, footstepVolume);
+        }
+    }
+    // ==========================================
+
     void FindTarget()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -241,7 +287,7 @@ public class ArcherBot : MonoBehaviour
         return isDead;
     }
 
-   void Die()
+    void Die()
     {
         if (isDead) return;
         isDead = true;
@@ -264,10 +310,10 @@ public class ArcherBot : MonoBehaviour
             col.enabled = false;
         }
 
-        // Вызываем спавн мусора с задержкой (например, через 0.8 секунды)
+        // Вызываем спавн мусора с задержкой
         Invoke("SpawnTrash", 1.5f);
 
-        // Уничтожаем объект через 1.5 секунды (успеет проиграться вся анимация)
+        // Уничтожаем объект через 1.5 секунды
         Destroy(gameObject, 1.5f);
     }
 

@@ -8,12 +8,24 @@ public class Chest : MonoBehaviour
     public int maxTrash = 6;            // Максимальное количество предметов мусора
     public Transform spawnPoint;        // Точка, откуда вылетает мусор (если пусто, то из центра сундука)
     
+    [Header("Звуки и Громкость")]
+    public AudioClip openSound;         // Звук открытия сундука
+    [Range(0f, 1f)] public float openVolume = 1f; // Ползунок громкости от 0 до 1
+
     private bool isOpen = false;
     private Animator animator;
+    private AudioSource audioSource;    // Компонент для воспроизведения звука
 
     void Start()
     {
         animator = GetComponent<Animator>();
+
+        // Автоматически находим компонент Audio Source на сундуке или добавляем его
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     // Метод для открытия сундука
@@ -21,6 +33,9 @@ public class Chest : MonoBehaviour
     {
         if (isOpen) return;
         isOpen = true;
+
+        // Проигрываем звук открытия с учетом настроенной громкости
+        PlayOpenSound();
 
         // 1. Включаем анимацию открытия сундука (если в Animator есть триггер "Open")
         if (animator != null)
@@ -30,6 +45,15 @@ public class Chest : MonoBehaviour
 
         // 2. Спавним мусор с разлетом
         SpawnTrash();
+    }
+
+    // Метод воспроизведения звука (можно вызывать из кода или через Animation Event)
+    public void PlayOpenSound()
+    {
+        if (audioSource != null && openSound != null)
+        {
+            audioSource.PlayOneShot(openSound, openVolume);
+        }
     }
 
     void SpawnTrash()

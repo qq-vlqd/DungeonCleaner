@@ -9,10 +9,7 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
-        float v = PlayerPrefs.GetFloat("volume", 1f);
-        AudioListener.volume = v;
-        if (volumeSlider != null) volumeSlider.value = v;
-        settingsPanel.SetActive(false);
+       
     }
 
     public void StartGame()
