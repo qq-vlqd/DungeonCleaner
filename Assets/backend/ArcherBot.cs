@@ -11,7 +11,7 @@ public class ArcherBot : MonoBehaviour
     public float detectionRange = 8f;       // Дистанция обнаружения
     public float attackRange = 6f;          // Дистанция стрельбы
     public float safeDistance = 3f;         // Дистанция, ближе которой лучник отбегает назад
-    public float attackCooldown = 2f;       
+    public float attackCooldown = 2f; 
 
     [Header("Ссылки на стрельбу")]
     public GameObject arrowPrefab;          
@@ -24,16 +24,22 @@ public class ArcherBot : MonoBehaviour
     private Transform currentTarget;
     private Animator animator;
     private Rigidbody2D rb;
+    private Collider2D col;                 // Ссылка на коллайдер
     private bool facingRight = true;
+    private bool isDead = false;            // Флаг для проверки состояния смерти
 
     void Start()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<Collider2D>();
     }
 
     void Update()
     {
+        // Если скелет мертв, полностью прекращаем работу логики ИИ
+        if (isDead) return;
+
         FindTarget();
 
         if (currentTarget != null)
@@ -76,8 +82,7 @@ public class ArcherBot : MonoBehaviour
             }
             else
             {
-                // ПРЕГРАДА НА ПУТИ ИЛИ ЦЕЛИ НЕТ В ЗОНЕ ВИДИМОСТИ:
-                // Не накапливаем таймер атаки, чтобы скелет не стрелял сквозь стены
+                // ПРЕГРАДА НА ПУТИ ИЛИ ЦЕЛИ НЕТ В ЗОНЕ ВИДИМОСТИ
                 StopMoving();
             }
         }
@@ -95,10 +100,7 @@ public class ArcherBot : MonoBehaviour
 
         Debug.DrawRay(startPos, direction * distance, Color.red);
         
-        // Проверяем лучом, задевает ли он препятствия (слой obstacleLayer)
         RaycastHit2D hit = Physics2D.Raycast(startPos, direction, distance, obstacleLayer);
-
-        // Если hit.collider == null, значит, путь полностью чист
         return hit.collider == null;
     }
 
@@ -142,7 +144,7 @@ public class ArcherBot : MonoBehaviour
     // Вызывается из анимации атаки через Animation Event
     public void SpawnArrowEvent()
     {
-        if (arrowPrefab == null) return;
+        if (arrowPrefab == null || isDead) return;
 
         Vector2 origin = shootPoint != null ? shootPoint.position : transform.position;
         GameObject arrowObj = Instantiate(arrowPrefab, origin, Quaternion.identity);
@@ -225,6 +227,8 @@ public class ArcherBot : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if (isDead) return; // Если уже мертв, урон не принимаем
+
         hp -= damage;
         if (hp <= 0)
         {
@@ -234,14 +238,45 @@ public class ArcherBot : MonoBehaviour
 
     public bool IsDead()
     {
-        return hp <= 0;
+        return isDead;
     }
-    void Die()
+
+   void Die()
+    {
+        if (isDead) return;
+        isDead = true;
+
+        // Включаем анимацию смерти через триггер "Death"
+        if (animator != null)
+        {
+            animator.SetTrigger("Death");
+        }
+
+        // Отключаем физику и коллайдер, чтобы враги перестали атаковать мертвого скелета
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.simulated = false;
+        }
+
+        if (col != null)
+        {
+            col.enabled = false;
+        }
+
+        // Вызываем спавн мусора с задержкой (например, через 0.8 секунды)
+        Invoke("SpawnTrash", 1.5f);
+
+        // Уничтожаем объект через 1.5 секунды (успеет проиграться вся анимация)
+        Destroy(gameObject, 1.5f);
+    }
+
+    // Отдельный метод для создания мусора
+    void SpawnTrash()
     {
         if (trashPrefab != null)
         {
             Instantiate(trashPrefab, transform.position, Quaternion.identity);
         }
-        Destroy(gameObject);
     }
 }

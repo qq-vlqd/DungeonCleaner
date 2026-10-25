@@ -10,6 +10,7 @@ TagManager:
   - Ladder
   - Trash
   - Breakable
+  - Door
   layers:
   - Default
   - TransparentFX
