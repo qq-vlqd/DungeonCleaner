@@ -3767,7 +3767,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -161, y: 94}
+  m_AnchoredPosition: {x: -173.49104, y: 95.38007}
   m_SizeDelta: {x: 160, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1480450550
@@ -3790,7 +3790,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 78eff923f9c3a754d9a3c682a3465116, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b6bbff6a97ca3464c81b953e08a7dbac, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4534,7 +4534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ffb356efe06ee54f8811f2d757eaa85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: coins
+  id: hp
   levelImage: {fileID: 267416745}
   levelSprites:
   - {fileID: 21300000, guid: 6422c37d5e7dde643871c93ce605a549, type: 3}
@@ -4702,7 +4702,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1857506513
 RectTransform:
   m_ObjectHideFlags: 0
