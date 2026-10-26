@@ -14,48 +14,66 @@ public class KnightSequence : MonoBehaviour
     public float moveSpeed = 2.5f;
 
     [Header("Настройки реплик и облачка")]
-    public GameObject speechBubbleObj;         // Ссылка на Canvas с облачком
-    public TextMeshProUGUI speechText;         // Текст (TextMeshPro)
-    
+    public GameObject speechBubbleObj;
+    public TextMeshProUGUI speechText;
+
     [TextArea(1, 3)] public string phrase1 = "Я пройду немного вправо...";
     [TextArea(1, 3)] public string phrase2 = "А теперь разворачиваюсь назад!";
     [TextArea(1, 3)] public string phrase3 = "И это моя финальная реплика!";
-    
+
     public float phraseDisplayTime = 3f;
+
+    [Header("Анимация смерти")]
+    public string deathStateName = "Death";         // имя стейта в Animator (Layer 0)
+    public float deathAnimationDuration = 1.5f;     // длительность анимации смерти в секундах
+    public bool disablePhysicsAfterDeath = true;    // отключать физику после анимации
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Animator anim;
+    private Collider2D col;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        col = GetComponent<Collider2D>();
 
         currentHealth = maxHealth;
 
         if (speechBubbleObj != null)
-        {
             speechBubbleObj.SetActive(false);
+
+        // Проверка Animator на старте — сразу видно проблемы в Console
+        if (anim == null)
+        {
+            Debug.LogError("[Knight] Animator не найден на объекте!", this);
+        }
+        else
+        {
+            int hash = Animator.StringToHash(deathStateName);
+            if (!anim.HasState(0, hash))
+            {
+                Debug.LogWarning(
+                    $"[Knight] Стейт '{deathStateName}' не найден в Layer 0 Animator. " +
+                    $"Анимация смерти не будет играть, пока не создадите стейт с таким именем.", this);
+            }
         }
 
-        // Запускаем последовательность действий
         StartCoroutine(KnightRoutine());
     }
 
     IEnumerator KnightRoutine()
     {
         // 1. ДВИЖЕНИЕ ВПРАВО
-        if (spriteRenderer != null) spriteRenderer.flipX = false; 
-        
+        if (spriteRenderer != null) spriteRenderer.flipX = false;
+
         float startX = transform.position.x;
         float targetX = startX + moveDistance;
 
-        // Включаем анимацию ходьбы через параметр "Speed"
         if (anim != null) anim.SetFloat("Speed", moveSpeed);
 
-        // Двигаемся, пока не достигнем точки или пока рыцарь не умрет
         while (!isDead && Mathf.Abs(transform.position.x - targetX) > 0.05f)
         {
             rb.linearVelocity = new Vector2(moveSpeed, rb.linearVelocity.y);
@@ -64,7 +82,6 @@ public class KnightSequence : MonoBehaviour
 
         if (isDead) yield break;
 
-        // Останавливаемся и выключаем анимацию ходьбы
         rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
         if (anim != null) anim.SetFloat("Speed", 0f);
 
@@ -75,7 +92,7 @@ public class KnightSequence : MonoBehaviour
         yield return StartCoroutine(ShowPhraseRoutine(phrase1));
         if (isDead) yield break;
 
-        // 3. РАЗВОРОТ В ОБРАТНУЮ СТОРОНУ (НАЛЕВО)
+        // 3. РАЗВОРОТ
         if (spriteRenderer != null) spriteRenderer.flipX = true;
         yield return new WaitForSeconds(0.5f);
         if (isDead) yield break;
@@ -91,14 +108,10 @@ public class KnightSequence : MonoBehaviour
         yield return StartCoroutine(ShowPhraseRoutine(phrase3));
         if (isDead) yield break;
 
-        // Скрываем облачко по окончании всей последовательности
         if (speechBubbleObj != null)
-        {
             speechBubbleObj.SetActive(false);
-        }
     }
 
-    // Вспомогательная короутина для показа фраз с проверкой здоровья
     IEnumerator ShowPhraseRoutine(string phraseToSay)
     {
         if (speechBubbleObj != null) speechBubbleObj.SetActive(true);
@@ -115,44 +128,89 @@ public class KnightSequence : MonoBehaviour
         if (speechBubbleObj != null) speechBubbleObj.SetActive(false);
     }
 
-    // Метод получения урона
     public void TakeDamage(int damage)
     {
         if (isDead) return;
 
         currentHealth -= damage;
+        Debug.Log($"Рыцарь получил урон: {damage}. Осталось HP: {currentHealth}");
+
         if (currentHealth <= 0)
-        {
             Die();
+    }
+
+    void Die()
+    {
+        if (isDead) return;
+        isDead = true;
+        StopAllCoroutines();
+
+        Debug.Log("[Knight] Die() — запускаю анимацию смерти");
+
+        if (speechBubbleObj != null)
+            speechBubbleObj.SetActive(false);
+
+        PlayDeathAnimation();
+
+        // Останавливаем физику аккуратно, чтобы не сломать Animator
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            // Kinematic вместо simulated = false — Animator продолжит работать,
+            // даже если updateMode = AnimatePhysics
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+
+        StartCoroutine(DeathAnimationRoutine());
+    }
+
+    void PlayDeathAnimation()
+    {
+        if (anim == null)
+        {
+            Debug.LogWarning("[Knight] Animator отсутствует — нечего проигрывать", this);
+            return;
+        }
+
+        // Обнуляем Speed ДО принудительного Play — иначе Idle/Walk может перебить
+        anim.SetFloat("Speed", 0f);
+
+        // Проверяем updateMode: если Animator привязан к физике, но rb кинематический —
+        // это ОК, Animator продолжит работать сам по себе
+        int hash = Animator.StringToHash(deathStateName);
+
+        if (anim.HasState(0, hash))
+        {
+            // Принудительный Play — минует все переходы и приоритеты
+            anim.Play(hash, 0, 0f);
+            Debug.Log($"[Knight] Принудительно запущен стейт '{deathStateName}' через anim.Play()");
+        }
+        else
+        {
+            Debug.LogWarning(
+                $"[Knight] Стейт '{deathStateName}' не найден в Layer 0. " +
+                $"Пробую триггер 'Die'. Проверьте настройки Animator!", this);
+            anim.SetTrigger("Die");
         }
     }
 
-    // Логика смерти
-    void Die()
+    IEnumerator DeathAnimationRoutine()
     {
-        isDead = true;
-        StopAllCoroutines(); // Останавливаем все запущенные движения и реплики
+        // Ждём пока анимация доиграет
+        yield return new WaitForSeconds(deathAnimationDuration);
 
-        rb.linearVelocity = Vector2.zero;
-
-        // Прячем облачко диалога, если оно горело
-        if (speechBubbleObj != null)
+        if (disablePhysicsAfterDeath && rb != null)
         {
-            speechBubbleObj.SetActive(false);
+            // Физика уже kinematic (отключена в Die), дополнительно ничего не ломаем
+            rb.linearVelocity = Vector2.zero;
         }
 
-        // Запускаем анимацию смерти
-        if (anim != null)
-        {
-            anim.SetFloat("Speed", 0f);
-            anim.SetTrigger("Die"); // В Animator должен быть Trigger параметр с именем "Die"
-        }
+        if (col != null)
+            col.enabled = false;
 
-        // Отключаем физический коллайдер, чтобы сквозь него можно было проходить
-        Collider2D col = GetComponent<Collider2D>();
-        if (col != null) col.enabled = false;
-
-        // Отключаем сам скрипт, чтобы логика больше не выполнялась
+        // Отключаем скрипт, но НЕ Animator — иначе стейт смерти может сброситься
+        // (если в Animator "Write Defaults" = off и стейт держит позу — стейт останется)
         enabled = false;
     }
 }

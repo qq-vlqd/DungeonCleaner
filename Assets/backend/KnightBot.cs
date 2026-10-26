@@ -236,36 +236,6 @@ public class KnightBot : MonoBehaviour
                 Log("IgnoreCollision с " + cols[j].gameObject.name);
             }
         }
-        if (rb == null)
-        {
-            Debug.LogError("KnightBot: на рыцаре нужен Rigidbody2D", this);
-            enabled = false;
-            return;
-        }
-
-        colliderWasTrigger = col.isTrigger;
-
-        if (rb.gravityScale <= 0f) rb.gravityScale = 1f;
-        normalGravity = rb.gravityScale;
-
-        rb.freezeRotation = true;
-        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
-
-        if (_sharedKnightMat == null)
-        {
-            _sharedKnightMat = new PhysicsMaterial2D("KnightNoFriction");
-            _sharedKnightMat.friction = 0f;
-            _sharedKnightMat.bounciness = 0f;
-        }
-        col.sharedMaterial = _sharedKnightMat;
-    }
-
-    public void Start()
-    {
-        if (col == null) return;
-        groundedFeetY = col.bounds.min.y;
-        if (!isBoss) UpdateTargets();
     }
 
     void Update()
