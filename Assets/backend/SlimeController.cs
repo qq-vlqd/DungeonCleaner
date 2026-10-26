@@ -5,7 +5,7 @@ public class SlimeController : MonoBehaviour
 {
     [Header("Здоровье и Мусор")]
     public int hp = 40;
-    public GameObject trashPrefab;        
+    public GameObject trashPrefab;          
     public int collectedTrashCount = 0;   
 
     [Header("Интерфейс (UI)")]
@@ -21,10 +21,17 @@ public class SlimeController : MonoBehaviour
     public float checkRadius = 0.2f;      
     public LayerMask groundLayer;         
 
+    [Header("Настройки атаки")]
+    public bool canAttack = true;         // Включение / выключение возможности атаковать
+    public int attackDamage = 20;         // Урон от атаки
+    public float attackRange = 1.5f;      // Дальность (радиус) атаки
+    public LayerMask enemyLayer;          // Слой врагов
+
     [Header("Звуки")]
     public AudioClip jumpSound;           // Звук прыжка
     public AudioClip deathSound;          // Звук смерти
     public AudioClip footstepSound;       // Звук шага / бега
+    public AudioClip attackSound;         // Звук атаки
 
     private Rigidbody2D rb;
     private Animator animator; 
@@ -58,6 +65,12 @@ public class SlimeController : MonoBehaviour
         {
             Jump();
         }
+
+        // Атака по клавише E (если атака разрешена в инспекторе)
+        if (canAttack && Input.GetKeyDown(KeyCode.E))
+        {
+            Attack();
+        }
     }
 
     void FixedUpdate()
@@ -72,8 +85,6 @@ public class SlimeController : MonoBehaviour
         }
         else
         {
-            // Если вы забыли перетащить объект Ground Check в инспектор, 
-            // слайм не сможет летать — прыжки просто отключатся и появится предупреждение.
             isGrounded = false;
             Debug.LogWarning("Внимание: Не назначен Ground Check в скрипте SlimeController!");
         }
@@ -102,13 +113,51 @@ public class SlimeController : MonoBehaviour
     {
         // Принудительно обнуляем вертикальную скорость перед прыжком и толкаем вверх
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-        isGrounded = false; // Сразу выключаем флаг
+        isGrounded = false; 
 
         PlaySound(jumpSound);
 
         if (animator != null)
         {
             animator.SetTrigger("Jump");
+        }
+    }
+
+    void Attack()
+    {
+        // Запускаем триггер анимации атаки в Animator
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack");
+        }
+
+        PlaySound(attackSound);
+
+        // Определяем направление взгляда персонажа (1 - вправо, -1 - влево)
+        float facingDir = transform.localScale.x > 0 ? 1f : -1f;
+
+        // Вычисляем точку удара впереди персонажа
+        Vector2 attackPos = (Vector2)transform.position + new Vector2(facingDir * (attackRange * 0.5f), 0f);
+
+        // Проверяем врагов в радиусе атаки
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPos, attackRange * 0.5f, enemyLayer);
+
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            // Проверяем наличие скриптов урона у юнита спереди
+            KnightSequence knightSeq = enemy.GetComponent<KnightSequence>();
+            if (knightSeq != null)
+            {
+                knightSeq.TakeDamage(attackDamage);
+                break; // Наносим урон первому стоящему впереди юниту
+            }
+
+            KnightBot knightBot = enemy.GetComponent<KnightBot>();
+            if (knightBot != null)
+            {
+                knightBot.TakeDamage(attackDamage);
+                break;
+            }
         }
     }
 
@@ -200,6 +249,16 @@ public class SlimeController : MonoBehaviour
         {
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(groundCheck.position, checkRadius);
+        }
+
+        // Рисуем зону атаки в редакторе Unity, если атака включена
+        if (canAttack)
+        {
+            float facingDir = transform.localScale.x > 0 ? 1f : -1f;
+            Vector2 attackPos = (Vector2)transform.position + new Vector2(facingDir * (attackRange * 0.5f), 0f);
+            
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(attackPos, attackRange * 0.5f);
         }
     }
 }

@@ -52,7 +52,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -90,7 +90,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -131,10 +131,10 @@ TextureImporter:
       name: Soldier_Attack01_0
       rect:
         serializedVersion: 2
-        x: 41
-        y: 40
-        width: 17
-        height: 21
+        x: 40
+        y: 39
+        width: 19
+        height: 23
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,10 +153,10 @@ TextureImporter:
       name: Soldier_Attack01_1
       rect:
         serializedVersion: 2
-        x: 141
-        y: 40
-        width: 19
-        height: 27
+        x: 140
+        y: 39
+        width: 21
+        height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -175,10 +175,10 @@ TextureImporter:
       name: Soldier_Attack01_2
       rect:
         serializedVersion: 2
-        x: 241
-        y: 40
-        width: 20
-        height: 26
+        x: 240
+        y: 39
+        width: 22
+        height: 28
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -197,10 +197,10 @@ TextureImporter:
       name: Soldier_Attack01_3
       rect:
         serializedVersion: 2
-        x: 336
-        y: 40
-        width: 34
-        height: 20
+        x: 335
+        y: 39
+        width: 36
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -219,10 +219,10 @@ TextureImporter:
       name: Soldier_Attack01_4
       rect:
         serializedVersion: 2
-        x: 436
-        y: 40
-        width: 34
-        height: 20
+        x: 435
+        y: 39
+        width: 36
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -241,10 +241,10 @@ TextureImporter:
       name: Soldier_Attack01_5
       rect:
         serializedVersion: 2
-        x: 536
-        y: 40
-        width: 22
-        height: 20
+        x: 535
+        y: 39
+        width: 24
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -263,7 +263,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: f489eba68999dca45b81dcce772b79d0
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 

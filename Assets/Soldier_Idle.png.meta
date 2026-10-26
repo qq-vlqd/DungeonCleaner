@@ -52,7 +52,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -90,7 +90,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -131,10 +131,10 @@ TextureImporter:
       name: Soldier_Idle_0
       rect:
         serializedVersion: 2
-        x: 41
-        y: 40
-        width: 17
-        height: 21
+        x: 40
+        y: 39
+        width: 19
+        height: 23
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,10 +153,10 @@ TextureImporter:
       name: Soldier_Idle_1
       rect:
         serializedVersion: 2
-        x: 141
-        y: 40
-        width: 17
-        height: 21
+        x: 140
+        y: 39
+        width: 19
+        height: 23
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -175,10 +175,10 @@ TextureImporter:
       name: Soldier_Idle_2
       rect:
         serializedVersion: 2
-        x: 241
-        y: 40
-        width: 17
-        height: 22
+        x: 240
+        y: 39
+        width: 19
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -197,10 +197,10 @@ TextureImporter:
       name: Soldier_Idle_3
       rect:
         serializedVersion: 2
-        x: 341
-        y: 40
-        width: 17
-        height: 22
+        x: 340
+        y: 39
+        width: 19
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -219,10 +219,10 @@ TextureImporter:
       name: Soldier_Idle_4
       rect:
         serializedVersion: 2
-        x: 441
-        y: 40
-        width: 17
-        height: 21
+        x: 440
+        y: 39
+        width: 19
+        height: 23
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -241,10 +241,10 @@ TextureImporter:
       name: Soldier_Idle_5
       rect:
         serializedVersion: 2
-        x: 541
-        y: 40
-        width: 17
-        height: 21
+        x: 540
+        y: 39
+        width: 19
+        height: 23
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -263,7 +263,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2e09a9fced87cb14288d189ceeea04b7
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
