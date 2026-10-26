@@ -1,47 +1,41 @@
-
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using TMPro;
 
 public class SlimeController : MonoBehaviour
 {
     [Header("Здоровье и Мусор")]
     public int hp = 40;
-    public GameObject trashPrefab;
-    public int collectedTrashCount = 0;
+    public GameObject trashPrefab;          
+    public int collectedTrashCount = 0;   
 
     [Header("Интерфейс (UI)")]
-    public TextMeshProUGUI trashText;
+    public TextMeshProUGUI trashText;     
 
     [Header("Движение Слайма")]
-    public float moveSpeed = 5f;
-    public float jumpForce = 8f;
-    public float cleaningSpeedMultiplier = 1f;
+    public float moveSpeed = 5f;          
+    public float jumpForce = 8f;          
+    public float cleaningSpeedMultiplier = 1f; 
 
     [Header("Проверка земли")]
-    public Transform groundCheck;
-    public float checkRadius = 0.2f;
-    public LayerMask groundLayer;
+    public Transform groundCheck;         
+    public float checkRadius = 0.2f;      
+    public LayerMask groundLayer;         
 
     [Header("Настройки атаки")]
-    public bool canAttack = true;
-    public int attackDamage = 20;
-    public float attackRange = 1.5f;
-    public LayerMask enemyLayer;
+    public bool canAttack = true;         // Включение / выключение возможности атаковать
+    public int attackDamage = 20;         // Урон от атаки
+    public float attackRange = 1.5f;      // Дальность (радиус) атаки
+    public LayerMask enemyLayer;          // Слой врагов
 
     [Header("Звуки")]
-    public AudioClip jumpSound;
-    public AudioClip deathSound;
-    public AudioClip footstepSound;
-    public AudioClip attackSound;
-
-    [Header("Перезапуск уровня")]
-    public float restartDelay = 2f;
+    public AudioClip jumpSound;           // Звук прыжка
+    public AudioClip deathSound;          // Звук смерти
+    public AudioClip footstepSound;       // Звук шага / бега
+    public AudioClip attackSound;         // Звук атаки
 
     private Rigidbody2D rb;
-    private Animator animator;
-    private AudioSource audioSource;
-
+    private Animator animator; 
+    private AudioSource audioSource;      
     private bool isGrounded;
     private float horizontalInput;
     private bool coinsBanked = false;
@@ -50,12 +44,10 @@ public class SlimeController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-
-        UpdateTrashUI();
+        animator = GetComponent<Animator>(); 
+        UpdateTrashUI(); 
 
         audioSource = GetComponent<AudioSource>();
-
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
@@ -68,13 +60,13 @@ public class SlimeController : MonoBehaviour
 
         horizontalInput = Input.GetAxisRaw("Horizontal");
 
-        if ((Input.GetKeyDown(KeyCode.Space) ||
-             Input.GetKeyDown(KeyCode.W) ||
-             Input.GetKeyDown(KeyCode.UpArrow)) && isGrounded)
+        // Прыгаем только если нажата кнопка И мы реально на земле
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && isGrounded)
         {
             Jump();
         }
 
+        // Атака по клавише E (если атака разрешена в инспекторе)
         if (canAttack && Input.GetKeyDown(KeyCode.E))
         {
             Attack();
@@ -85,61 +77,43 @@ public class SlimeController : MonoBehaviour
     {
         if (isDead) return;
 
-        if (rb == null) return;
-
         if (groundCheck != null)
         {
-            bool touchingGround = Physics2D.OverlapCircle(
-                groundCheck.position,
-                checkRadius,
-                groundLayer
-            );
-
+            // Проверяем пересечение с землей И то, что мы не летим вверх (velocity.y <= 0.05)
+            bool touchingGround = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
             isGrounded = touchingGround && rb.linearVelocity.y <= 0.05f;
         }
         else
         {
             isGrounded = false;
+            Debug.LogWarning("Внимание: Не назначен Ground Check в скрипте SlimeController!");
         }
 
-        rb.linearVelocity = new Vector2(
-            horizontalInput * moveSpeed,
-            rb.linearVelocity.y
-        );
+        // Движение
+        float currentSpeedMultiplier = 1f; 
+        rb.linearVelocity = new Vector2(horizontalInput * moveSpeed * currentSpeedMultiplier, rb.linearVelocity.y);
 
         if (animator != null)
         {
             animator.SetFloat("Speed", Mathf.Abs(horizontalInput));
         }
 
+        // Поворот спрайта
         if (horizontalInput > 0)
         {
-            transform.localScale = new Vector3(
-                Mathf.Abs(transform.localScale.x),
-                transform.localScale.y,
-                transform.localScale.z
-            );
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
         else if (horizontalInput < 0)
         {
-            transform.localScale = new Vector3(
-                -Mathf.Abs(transform.localScale.x),
-                transform.localScale.y,
-                transform.localScale.z
-            );
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
     }
 
     void Jump()
     {
-        if (rb == null) return;
-
-        rb.linearVelocity = new Vector2(
-            rb.linearVelocity.x,
-            jumpForce
-        );
-
-        isGrounded = false;
+        // Принудительно обнуляем вертикальную скорость перед прыжком и толкаем вверх
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        isGrounded = false; 
 
         PlaySound(jumpSound);
 
@@ -151,6 +125,7 @@ public class SlimeController : MonoBehaviour
 
     void Attack()
     {
+        // Запускаем триггер анимации атаки в Animator
         if (animator != null)
         {
             animator.SetTrigger("Attack");
@@ -158,29 +133,26 @@ public class SlimeController : MonoBehaviour
 
         PlaySound(attackSound);
 
+        // Определяем направление взгляда персонажа (1 - вправо, -1 - влево)
         float facingDir = transform.localScale.x > 0 ? 1f : -1f;
 
-        Vector2 attackPos = (Vector2)transform.position +
-            new Vector2(facingDir * (attackRange * 0.5f), 0f);
+        // Вычисляем точку удара впереди персонажа
+        Vector2 attackPos = (Vector2)transform.position + new Vector2(facingDir * (attackRange * 0.5f), 0f);
 
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(
-            attackPos,
-            attackRange * 0.5f,
-            enemyLayer
-        );
+        // Проверяем врагов в радиусе атаки
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPos, attackRange * 0.5f, enemyLayer);
 
         foreach (Collider2D enemy in hitEnemies)
         {
+            // Проверяем наличие скриптов урона у юнита спереди
             KnightSequence knightSeq = enemy.GetComponent<KnightSequence>();
-
             if (knightSeq != null)
             {
                 knightSeq.TakeDamage(attackDamage);
-                break;
+                break; // Наносим урон первому стоящему впереди юниту
             }
 
             KnightBot knightBot = enemy.GetComponent<KnightBot>();
-
             if (knightBot != null)
             {
                 knightBot.TakeDamage(attackDamage);
@@ -189,26 +161,13 @@ public class SlimeController : MonoBehaviour
         }
     }
 
-    public void PlayJumpSound()
-    {
-        PlaySound(jumpSound);
-    }
+    public void PlayJumpSound() { PlaySound(jumpSound); }
+    public void PlayDeathSound() { PlaySound(deathSound); }
+    public void PlayFootstepSound() { PlaySound(footstepSound); }
 
-    public void PlayDeathSound()
-    {
-        PlaySound(deathSound);
-    }
-
-    public void PlayFootstepSound()
-    {
-        PlaySound(footstepSound);
-    }
-
-    // Оставлен для совместимости с Animation Event.
-    // Не уничтожаем слайма, иначе перезапуск может не выполниться.
     public void DestroyAfterDeathAnimation()
     {
-        // Перезапуск уровня запускается в Die().
+        Destroy(gameObject);
     }
 
     void PlaySound(AudioClip clip)
@@ -222,16 +181,14 @@ public class SlimeController : MonoBehaviour
     public void BankCoins()
     {
         if (coinsBanked) return;
-
         coinsBanked = true;
     }
 
     public void TakeDamage(int damage)
     {
-        if (isDead || damage <= 0) return;
+        if (isDead) return;
 
         hp -= damage;
-
         Debug.Log("Слайм получил урон! Осталось ХП: " + hp);
 
         if (hp <= 0)
@@ -243,7 +200,6 @@ public class SlimeController : MonoBehaviour
     void Die()
     {
         if (isDead) return;
-
         isDead = true;
 
         PlaySound(deathSound);
@@ -260,7 +216,6 @@ public class SlimeController : MonoBehaviour
         }
 
         Collider2D col = GetComponent<Collider2D>();
-
         if (col != null)
         {
             col.enabled = false;
@@ -268,72 +223,42 @@ public class SlimeController : MonoBehaviour
 
         if (trashPrefab != null)
         {
-            Instantiate(
-                trashPrefab,
-                transform.position,
-                Quaternion.identity
-            );
+            Instantiate(trashPrefab, transform.position, Quaternion.identity);
         }
 
-        // Перезапускаем текущий уровень после смерти.
-        Invoke(nameof(RestartLevel), restartDelay);
-    }
-
-    void RestartLevel()
-    {
-        Time.timeScale = 1f;
-
-        SceneManager.LoadScene(
-            SceneManager.GetActiveScene().buildIndex
-        );
+        Destroy(gameObject, 2f); 
     }
 
     public void AddTrash(int amount = 1)
-{
-    collectedTrashCount += amount;
-
-    Debug.Log("Собран мусор! Всего: " + collectedTrashCount);
-
-    UpdateTrashUI();
-}
-
-void UpdateTrashUI()
-{
-    if (trashText != null)
     {
-        trashText.text = "Trash: " + collectedTrashCount;
+        collectedTrashCount += amount;
+        UpdateTrashUI(); 
     }
-    else
+
+    void UpdateTrashUI()
     {
-        Debug.LogWarning("Не назначен Trash Text в SlimeController!");
+        if (trashText != null)
+        {
+            trashText.text = "Мусор: " + collectedTrashCount;
+        }
     }
-}
 
     private void OnDrawGizmosSelected()
     {
         if (groundCheck != null)
         {
             Gizmos.color = Color.green;
-
-            Gizmos.DrawWireSphere(
-                groundCheck.position,
-                checkRadius
-            );
+            Gizmos.DrawWireSphere(groundCheck.position, checkRadius);
         }
 
+        // Рисуем зону атаки в редакторе Unity, если атака включена
         if (canAttack)
         {
             float facingDir = transform.localScale.x > 0 ? 1f : -1f;
-
-            Vector2 attackPos = (Vector2)transform.position +
-                new Vector2(facingDir * (attackRange * 0.5f), 0f);
-
+            Vector2 attackPos = (Vector2)transform.position + new Vector2(facingDir * (attackRange * 0.5f), 0f);
+            
             Gizmos.color = Color.red;
-
-            Gizmos.DrawWireSphere(
-                attackPos,
-                attackRange * 0.5f
-            );
+            Gizmos.DrawWireSphere(attackPos, attackRange * 0.5f);
         }
     }
 }
