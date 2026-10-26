@@ -8,15 +8,14 @@ public class KnightBot2 : MonoBehaviour
     public float climbSpeed = 3f;
     public float jumpForce = 7f;             // обычный прыжок
     public float maxJumpForce = 9f;          // самый сильный прыжок (для высоких уступов)
+    public float jumpMargin = 0.1f;          // запас высоты над уступом
     public float obstacleCheckDistance = 0.5f; // на каком расстоянии от края тела видим преграду
-    public float jumpClearance = 0.5f;       // запас высоты над уступом
     public float jumpCooldown = 0.3f;
     public bool jumpOverGaps = true;         // перепрыгивать ямы
     public float maxGapWidth = 2.5f;
     public LayerMask groundLayer;            // больше не обязателен: преградой считается любой твёрдый коллайдер
     public LayerMask wallOnlyLayer;          // стены для проверки «видит ли скелета»
     public LayerMask ignoreLayers;           // слои, которые НЕ считаем преградой (стрелы, мусор...)
-    public float stepProbe = 0.25f;          // шаг, которым измеряем высоту преграды
 
     [Header("Защита от застревания")]
     public float stuckTime = 0.5f;           // сколько стоим «в упор», прежде чем действовать
@@ -24,13 +23,19 @@ public class KnightBot2 : MonoBehaviour
     public float backoffTime = 0.8f;         // потом отходим назад на это время
 
     [Header("Этажи и цели")]
-    public float floorTolerance = 0.65f;     // не смешиваем соседние этажи
+    public float floorTolerance = 1.5f;      // меньше, чем расстояние между этажами
     public float retargetInterval = 0.25f;
 
     [Header("Лестницы")]
     public float ladderAlignDistance = 0.2f;
     public float climbTimeout = 8f;
     public bool passThroughOnLadder = true;  // на лестнице проходим сквозь платформы
+    public float exitStepDistance = 1f;      // на сколько шагнуть в сторону после подъёма (1 блок)
+    public int ladderExitDirection = -1;     // куда сойти с лестницы наверху: -1 = влево, +1 = вправо
+    public float exitTimeout = 2f;           // страховка: максимум столько секунд на этот шаг
+
+    [Header("Отладка")]
+    public bool debugLog = false;            // писать в Console, что делает рыцарь
 
     [Header("Префаб Мусора")]
     public GameObject trashPrefab;
@@ -72,10 +77,15 @@ public class KnightBot2 : MonoBehaviour
     Bounds climbBounds;
     float climbTimer;
     float climbCooldownTimer;
+    float climbStartFeetY;
 
-    // Короткий принудительный выход с лестницы после подъёма/спуска.
-    float ladderExitTimer;
-    float ladderExitDir = 1f;
+    // сход с лестницы наверху
+    bool exitingLadder;
+    float exitTargetX;
+    float exitTimer;
+    float lastLogTime;
+    const float scanStep = 0.25f;   // грубый шаг измерения высоты
+    const float fineStep = 0.05f;   // точный шаг
 
     // антизастревание
     float lastDesiredVx;
@@ -172,30 +182,11 @@ public class KnightBot2 : MonoBehaviour
             return;
         }
 
-        // Не даём выбору цели и защите от застревания перебивать выход с лестницы.
-        if (ladderExitTimer > 0f)
+        // наверху лестницы: сначала шагаем в сторону на один блок
+        if (exitingLadder)
         {
-            ladderExitTimer -= dt;
-            rb.gravityScale = normalGravity;
-
-            // Если скелет уже выбран, каждый физический кадр уточняем направление к нему.
-            if (targetArcher != null && currentArcherScript != null &&
-                !currentArcherScript.IsDead())
-            {
-                float dxToArcher = targetArcher.position.x - transform.position.x;
-                if (Mathf.Abs(dxToArcher) > 0.08f)
-                    ladderExitDir = Mathf.Sign(dxToArcher);
-                else
-                    ladderExitTimer = 0f;
-            }
-
-            if (ladderExitTimer > 0f)
-            {
-                rb.linearVelocity = new Vector2(ladderExitDir * speed, rb.linearVelocity.y);
-                lastDesiredVx = ladderExitDir * speed;
-                UpdateAnim(lastDesiredVx);
-                return;
-            }
+            LadderExitStep(dt);
+            return;
         }
 
         rb.gravityScale = normalGravity;
@@ -244,7 +235,9 @@ public class KnightBot2 : MonoBehaviour
             if (Mathf.Abs(dxL) > ladderAlignDistance)
                 return WalkToward(dxL);
 
-            if (climbCooldownTimer <= 0f && grounded)
+            // Вверх начинаем с земли; вниз можно и «на краю» проёма
+            bool canStart = floorDir > 0 ? grounded : (col.bounds.min.y > lb.min.y + 1.0f);
+            if (climbCooldownTimer <= 0f && canStart)
                 StartClimb(lb, floorDir);
             return 0f;
         }
@@ -301,66 +294,30 @@ public class KnightBot2 : MonoBehaviour
     // =====================================================================
     //  ПРЫЖКИ
     // =====================================================================
-
-void AutoJump(float dir)
-{
-    if (coyoteTimer <= 0f ||
-        jumpTimer > 0f ||
-        isClimbing ||
-        NearTargetLadder())
-        return;
-
-    float h;
-
-    if (ObstacleAhead(dir, out h))
+    void AutoJump(float dir)
     {
-        if (h <= MaxStepHeight() && HasHeadroom(h))
-            Jump(JumpVelocityFor(h));
+        if (coyoteTimer <= 0f || jumpTimer > 0f || isClimbing) return;
 
-        return;
-    }
-
-    if (jumpOverGaps && GapAhead(dir))
-        Jump(jumpForce);
-}
-
-bool HasHeadroom(float obstacleHeight)
-{
-    Bounds b = col.bounds;
-
-    float neededHeight = Mathf.Max(0.3f, obstacleHeight) + 0.2f;
-
-    Vector2 origin = new Vector2(
-        b.center.x,
-        b.min.y + neededHeight);
-
-    RaycastHit2D hit = CastSolid(
-        origin, Vector2.up, 0.6f);
-
-    return hit.collider == null;
-}
-
-
-    // Проверяем, хватит ли места над рыцарем для прыжка.
-    // Это не даёт ему бесконечно прыгать в потолок, застревая у бочки.
-    bool HasJumpHeadroom(float rise)
-    {
-        Bounds b = col.bounds;
-        float safeRise = Mathf.Max(0.15f, rise);
-        Vector2 checkCenter = new Vector2(b.center.x, b.center.y + safeRise);
-        Vector2 checkSize = new Vector2(Mathf.Max(0.05f, b.size.x * 0.85f),
-                                        Mathf.Max(0.05f, b.size.y * 0.85f));
-        Collider2D[] hits = Physics2D.OverlapBoxAll(checkCenter, checkSize, 0f, ObstacleMask);
-        for (int i = 0; i < hits.Length; i++)
+        float h, frontX;
+        if (ObstacleAhead(dir, out h, out frontX))
         {
-            if (IsSolid(hits[i])) return false;
+            float v;
+            if (CanClear(dir, frontX, h, out v))
+            {
+                Log("прыжок: высота преграды " + h.ToString("0.00") + ", скорость " + v.ToString("0.0"));
+                Jump(v);
+            }
+            return; // не пролезть: сработает защита от застревания
         }
-        return true;
+
+        if (jumpOverGaps && GapAhead(dir) && !NearTargetLadder())
+            Jump(jumpForce);
     }
 
     void Jump(float velocity)
     {
-        if (jumpTimer > 0f || !HasJumpHeadroom((velocity * velocity) / (2f * Gravity()))) return;
+        if (jumpTimer > 0f) return;
+        velocity = ClampToHeadroom(velocity); // не бьёмся головой о потолок
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, velocity);
         jumpTimer = jumpCooldown;
         coyoteTimer = 0f;
@@ -374,35 +331,85 @@ bool HasHeadroom(float obstacleHeight)
 
     float MaxStepHeight()
     {
-        return Mathf.Max(0.5f, (maxJumpForce * maxJumpForce) / (2f * Gravity()) - jumpClearance);
+        return Mathf.Max(0.5f, (maxJumpForce * maxJumpForce) / (2f * Gravity()) - jumpMargin);
     }
 
-    float JumpVelocityFor(float stepHeight)
+    // Y нижней грани потолка над точкой (или бесконечность, если потолка нет)
+    float CeilingY(float x, float fromY)
     {
-        float v = Mathf.Sqrt(2f * Gravity() * (stepHeight + jumpClearance));
-        return Mathf.Clamp(v, jumpForce * 0.7f, maxJumpForce);
+        RaycastHit2D hit = CastSolid(new Vector2(x, fromY), Vector2.up, 8f);
+        return hit.collider != null ? hit.point.y : Mathf.Infinity;
+    }
+
+    // Ограничиваем скорость прыжка так, чтобы голова не ударилась о потолок
+    float ClampToHeadroom(float velocity)
+    {
+        Bounds b = col.bounds;
+        float ceil = CeilingY(b.center.x, b.max.y + 0.01f);
+        if (float.IsInfinity(ceil)) return velocity;
+        float riseMax = Mathf.Max(0f, ceil - b.max.y - 0.03f);
+        return Mathf.Min(velocity, Mathf.Sqrt(2f * Gravity() * riseMax));
+    }
+
+    // Можно ли перепрыгнуть уступ высотой stepHeight, учитывая потолок?
+    bool CanClear(float dir, float frontX, float stepHeight, out float velocity)
+    {
+        velocity = 0f;
+        if (float.IsInfinity(stepHeight)) { LogThrottled("преграда слишком высокая"); return false; }
+
+        Bounds b = col.bounds;
+        float tall = b.size.y;
+
+        float ceilHere = CeilingY(b.center.x, b.max.y + 0.01f);                       // над нами
+        float ceilLand = CeilingY(frontX + dir * 0.3f, b.min.y + stepHeight + tall);  // над местом приземления
+        float ceil = Mathf.Min(ceilHere, ceilLand);
+
+        float riseMax = ceil - b.max.y - 0.03f;                                  // сколько можно подняться
+        float riseCap = (maxJumpForce * maxJumpForce) / (2f * Gravity());         // на сколько способен прыгнуть
+        float rise = Mathf.Min(stepHeight + jumpMargin, Mathf.Min(riseMax, riseCap));
+
+        if (rise < stepHeight + 0.03f)
+        {
+            LogThrottled("не пролезть: уступ " + stepHeight.ToString("0.00") + ", запас до потолка " + riseMax.ToString("0.00"));
+            return false;
+        }
+
+        velocity = Mathf.Sqrt(2f * Gravity() * rise);
+        return true;
     }
 
     // Есть ли перед нами преграда, и какой она высоты.
-    // Высоту меряем несколькими горизонтальными лучами: так не мешают потолки и платформы сверху.
-    bool ObstacleAhead(float dir, out float height)
+    // Высоту меряем горизонтальными лучами: так не мешают потолки и платформы сверху.
+    bool ObstacleAhead(float dir, out float height, out float frontX)
     {
         height = 0f;
+        frontX = 0f;
         Bounds b = col.bounds;
         float edgeX = b.center.x + dir * (b.extents.x + 0.02f);
         Vector2 rayDir = new Vector2(dir, 0f);
 
         // нижний луч: мелкие неровности земли (до 0.2) игнорируем
         float lowH = 0.2f;
-        if (CastSolid(new Vector2(edgeX, b.min.y + lowH), rayDir, obstacleCheckDistance).collider == null)
-            return false;
+        RaycastHit2D low = CastSolid(new Vector2(edgeX, b.min.y + lowH), rayDir, obstacleCheckDistance);
+        if (low.collider == null) return false;
+        frontX = low.point.x;
 
-        float maxH = MaxStepHeight();
-        for (float h = lowH + stepProbe; h <= maxH + stepProbe; h += stepProbe)
+        float limit = MaxStepHeight();
+        for (float h = lowH + scanStep; h <= limit + scanStep; h += scanStep)
         {
             if (CastSolid(new Vector2(edgeX, b.min.y + h), rayDir, obstacleCheckDistance).collider == null)
             {
-                height = h; // верх преграды где-то между предыдущим и этим лучом
+                // верх преграды между (h - scanStep) и h: уточняем мелким шагом
+                float top = h;
+                for (float r = h - scanStep + fineStep; r < h; r += fineStep)
+                {
+                    if (CastSolid(new Vector2(edgeX, b.min.y + r), rayDir, obstacleCheckDistance).collider == null)
+                    {
+                        top = r;
+                        break;
+                    }
+                }
+                height = top;
                 return true;
             }
         }
@@ -432,43 +439,11 @@ bool HasHeadroom(float obstacleHeight)
         return h.collider != null;
     }
 
-    
-bool NearTargetLadder()
-{
-    // Сначала проверяем лестницу, выбранную целью.
-    if (targetLadder != null)
+    bool NearTargetLadder()
     {
-        Bounds b = GetBounds(targetLadder);
-
-        if (Mathf.Abs(b.center.x - transform.position.x) < 1.5f
-            && col.bounds.max.y >= b.min.y - 0.5f
-            && col.bounds.min.y <= b.max.y + 0.5f)
-        {
-            return true;
-        }
+        if (targetLadder == null) return false;
+        return Mathf.Abs(GetBounds(targetLadder).center.x - transform.position.x) < 1.5f;
     }
-
-    // Проверяем и другие лестницы поблизости,
-    // даже если бот ещё не выбрал целевую лестницу.
-    GameObject[] ladders = GameObject.FindGameObjectsWithTag("Ladder");
-
-    foreach (GameObject ladder in ladders)
-    {
-        if (ladder == null) continue;
-
-        Bounds b = GetBounds(ladder.transform);
-
-        if (Mathf.Abs(b.center.x - transform.position.x) < 1.0f
-            && col.bounds.max.y >= b.min.y - 0.5f
-            && col.bounds.min.y <= b.max.y + 0.5f)
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 
     // =====================================================================
     //  ЗЕМЛЯ И ЛУЧИ
@@ -503,15 +478,6 @@ bool NearTargetLadder()
     // =====================================================================
     void CheckStuck(float dt)
     {
-    
-    
-    if (isClimbing || NearTargetLadder())
-    {
-        stuckTimer = 0f;
-        movingTimer = 0f;
-        return;
-    }
-    
         bool trying = Mathf.Abs(lastDesiredVx) > 0.1f;
         float actualVx = Mathf.Abs(rb.linearVelocity.x);
 
@@ -532,34 +498,17 @@ bool NearTargetLadder()
         if (stuckTimer < stuckTime) return;
         stuckTimer = 0f;
 
-        // Если над головой мало места, прыжки только прижимают рыцаря к потолку.
-        // В таком случае сразу отходим от препятствия и пробуем другой подход.
-        if (!HasJumpHeadroom((jumpForce * jumpForce) / (2f * Gravity())))
-        {
-            backoffDir = Mathf.Sign(lastDesiredVx);
-            backoffTimer = backoffTime;
-            jumpRetries = 0;
-            return;
-        }
-
         if (jumpRetries < maxJumpRetries)
         {
+            // пробуем прыгнуть всё сильнее
             float t = (jumpRetries + 1f) / Mathf.Max(1, maxJumpRetries);
             jumpTimer = 0f;
-            float retryVelocity = Mathf.Lerp(jumpForce, maxJumpForce, t);
-            if (HasJumpHeadroom((retryVelocity * retryVelocity) / (2f * Gravity())))
-                Jump(retryVelocity);
-            else
-            {
-                backoffDir = Mathf.Sign(lastDesiredVx);
-                backoffTimer = backoffTime;
-                jumpRetries = 0;
-                return;
-            }
+            Jump(Mathf.Lerp(jumpForce, maxJumpForce, t));
             jumpRetries++;
         }
         else
         {
+            // не помогло: отходим назад и пробуем снова
             backoffDir = Mathf.Sign(lastDesiredVx);
             backoffTimer = backoffTime;
             jumpRetries = 0;
@@ -575,6 +524,8 @@ bool NearTargetLadder()
         climbDir = dir;
         climbBounds = ladderBounds;
         climbTimer = 0f;
+        climbStartFeetY = col.bounds.min.y;
+        Log("начал " + (dir > 0 ? "подъём" : "спуск") + " по лестнице");
 
         rb.gravityScale = 0f;
         rb.linearVelocity = Vector2.zero;
@@ -591,139 +542,144 @@ bool NearTargetLadder()
         rb.linearVelocity = new Vector2(alignX, climbSpeed * climbDir);
 
         bool done = false;
-        if (climbDir > 0 && b.min.y >= climbBounds.max.y - 0.1f) done = true;
-        if (climbDir < 0 && b.min.y <= climbBounds.min.y + 0.12f) done = true;
-        // Если уже дошли до платформы, вернём обычный коллайдер и завершим спуск.
-        if (climbDir < 0 && climbTimer > 0.35f)
+        if (climbDir > 0)
         {
-            float feet = col.bounds.min.y;
-            RaycastHit2D floorHit = Physics2D.Raycast(
-                new Vector2(col.bounds.center.x, feet + 0.12f), Vector2.down, 0.3f, ObstacleMask);
-            if (floorHit.collider != null && IsSolid(floorHit.collider)) done = true;
+            if (b.min.y >= climbBounds.max.y - 0.1f) done = true;
+        }
+        else
+        {
+            float descended = climbStartFeetY - b.min.y;
+            if (b.min.y <= climbBounds.min.y + 0.05f) done = true;        // дошли до низа лестницы
+            else if (descended > 0.8f && grounded) done = true;           // коснулись пола нижнего этажа
         }
         if (climbTimer > climbTimeout) done = true; // страховка
 
         if (done) FinishClimb();
     }
 
-    
-
-    bool IsExitPositionClear(Vector2 candidatePosition)
+    void FinishClimb()
     {
-        Bounds b = col.bounds;
-        Vector2 offset = candidatePosition - rb.position;
-        Vector2 center = (Vector2)b.center + offset;
-        Vector2 size = new Vector2(
-            Mathf.Max(0.05f, b.size.x * 0.9f),
-            Mathf.Max(0.05f, b.size.y * 0.9f));
+        float newFloorY = climbDir > 0 ? climbBounds.max.y : climbBounds.min.y;
 
-        Collider2D[] hits = Physics2D.OverlapBoxAll(center, size, 0f, ObstacleMask);
-        for (int i = 0; i < hits.Length; i++)
+        // После спуска ставим рыцаря ровно на пол, чтобы он не оказался внутри плитки
+        if (climbDir < 0)
         {
-            if (IsSolid(hits[i]))
-                return false;
-        }
-
-        return true;
-    }
-
-void FinishClimb()
-{
-    Bounds b = col.bounds;
-
-    Transform active = targetArcher != null ? targetArcher : targetDoor;
-    float preferredDir = 1f;
-
-    if (active != null && Mathf.Abs(active.position.x - transform.position.x) > 0.1f)
-        preferredDir = Mathf.Sign(active.position.x - transform.position.x);
-    else if (spriteRenderer != null)
-        preferredDir = spriteRenderer.flipX ? -1f : 1f;
-
-    // Ставим ноги на край платформы, затем ищем свободное место сбоку от лестницы.
-    float targetFeetY = climbDir > 0
-        ? climbBounds.max.y + 0.02f
-        : climbBounds.min.y + 0.02f;
-
-    float targetY = rb.position.y + (targetFeetY - b.min.y);
-    float sideOffset = climbBounds.extents.x + b.extents.x + 0.18f;
-    Vector2 exitPosition = new Vector2(
-        climbBounds.center.x + preferredDir * sideOffset,
-        targetY);
-
-    // Если выбранная сторона заблокирована, пробуем противоположную сторону.
-    if (!IsExitPositionClear(exitPosition))
-    {
-        Vector2 otherSide = new Vector2(
-            climbBounds.center.x - preferredDir * sideOffset,
-            targetY);
-
-        if (IsExitPositionClear(otherSide))
-        {
-            exitPosition = otherSide;
-            preferredDir = -preferredDir;
-        }
-        else
-        {
-            // Если обе стороны тесные, отходим дальше в сторону цели.
-            for (float extra = 0.25f; extra <= 1.0f; extra += 0.25f)
+            Bounds b = col.bounds;
+            RaycastHit2D g = CastSolid(new Vector2(b.center.x, b.min.y + 1.0f), Vector2.down, 1.6f);
+            if (g.collider != null && g.distance > 0.001f)
             {
-                Vector2 farther = new Vector2(
-                    climbBounds.center.x + preferredDir * (sideOffset + extra),
-                    targetY);
-
-                if (IsExitPositionClear(farther))
-                {
-                    exitPosition = farther;
-                    break;
-                }
+                float dy = g.point.y - b.min.y + 0.01f;
+                rb.position = new Vector2(rb.position.x, rb.position.y + dy);
+                newFloorY = g.point.y;
             }
         }
+
+        isClimbing = false;
+        col.isTrigger = false;
+        rb.gravityScale = normalGravity;
+
+        groundedFeetY = newFloorY; // сразу считаем, что мы на новом этаже
+        Log("закончил " + (climbDir > 0 ? "подъём" : "спуск") + ", этаж y=" + newFloorY.ToString("0.00"));
+
+        jumpTimer = jumpCooldown;
+        climbCooldownTimer = 0.6f;
+        targetLadder = null;
+        ladderLockTarget = null;
+        retargetTimer = 0f; // сразу пересчитать цели
+
+        if (climbDir > 0)
+        {
+            // Наверху: не прыгаем, а сходим с лестницы на один блок в сторону
+            BeginLadderExit();
+            return;
+        }
+
+        Transform active = targetArcher != null ? targetArcher : targetDoor;
+        float exitDir = 1f;
+        if (active != null && Mathf.Abs(active.position.x - transform.position.x) > 0.1f)
+            exitDir = Mathf.Sign(active.position.x - transform.position.x);
+        else if (spriteRenderer != null)
+            exitDir = spriteRenderer.flipX ? -1f : 1f;
+
+        rb.linearVelocity = new Vector2(exitDir * speed, 0f);
     }
 
-    // Rigidbody2D.position надёжнее transform.position для динамического тела.
-    rb.position = exitPosition;
-    Physics2D.SyncTransforms();
-
-    col.isTrigger = false;
-    isClimbing = false;
-    rb.gravityScale = normalGravity;
-    rb.linearVelocity = new Vector2(preferredDir * speed, 0f);
-
-    groundedFeetY = col.bounds.min.y;
-    ladderExitDir = preferredDir;
-    ladderExitTimer = 0.65f;
-    jumpTimer = Mathf.Max(jumpTimer, jumpCooldown);
-    climbCooldownTimer = 1.0f;
-
-    targetLadder = null;
-    ladderLockTarget = null;
-    retargetTimer = retargetInterval;
-    stuckTimer = 0f;
-    movingTimer = 0f;
-    jumpRetries = 0;
-
-    // Сразу обновляем цель после выхода с лестницы: теперь скелет может
-    // оказаться на том же этаже, и рыцарь должен немедленно идти к нему.
-    UpdateTargets();
-
-    if (targetArcher != null && currentArcherScript != null &&
-        !currentArcherScript.IsDead())
+    // =====================================================================
+    //  СХОД С ЛЕСТНИЦЫ НАВЕРХУ: шаг на один блок в сторону
+    // =====================================================================
+    void BeginLadderExit()
     {
-        float dxToArcher = targetArcher.position.x - transform.position.x;
-        if (Mathf.Abs(dxToArcher) > 0.08f)
-        {
-            ladderExitDir = Mathf.Sign(dxToArcher);
-            rb.linearVelocity = new Vector2(ladderExitDir * speed, rb.linearVelocity.y);
-            lastDesiredVx = ladderExitDir * speed;
-        }
-        else
-        {
-            // Если рыцарь уже рядом по горизонтали, не уходим от цели.
-            ladderExitTimer = 0f;
-        }
-    }
-}
+        float dir = ladderExitDirection >= 0 ? 1f : -1f;
+        Bounds b = col.bounds;
 
+        // Ставим рыцаря ровно на пол рядом с лестницей (пол ищем со стороны схода)
+        float sideX = dir < 0f ? climbBounds.min.x - 0.15f : climbBounds.max.x + 0.15f;
+        float floorY = climbBounds.max.y;
+        RaycastHit2D g = CastSolid(new Vector2(sideX, climbBounds.max.y + 0.6f), Vector2.down, 1.6f);
+        if (g.collider != null) floorY = g.point.y;
+
+        rb.position = new Vector2(rb.position.x, rb.position.y + (floorY - b.min.y) + 0.01f);
+        groundedFeetY = floorY;
+
+        // Целевая точка: на exitStepDistance в сторону, но не ближе, чем нужно,
+        // чтобы полностью выйти за край лестницы (иначе рыцарь свалится обратно в проём)
+        float minShift = (climbBounds.extents.x + b.extents.x + 0.05f);
+        float shift = Mathf.Max(exitStepDistance, minShift - Mathf.Abs(transform.position.x - climbBounds.center.x));
+        exitTargetX = transform.position.x + dir * shift;
+
+        exitingLadder = true;
+        exitTimer = 0f;
+
+        // на время шага: без гравитации и сквозь коллайдеры, чтобы не цепляться за край проёма
+        col.isTrigger = true;
+        rb.gravityScale = 0f;
+        rb.linearVelocity = Vector2.zero;
+        Log("схожу с лестницы на " + shift.ToString("0.00") + " в сторону " + (dir < 0f ? "влево" : "вправо"));
+    }
+
+    void LadderExitStep(float dt)
+    {
+        exitTimer += dt;
+        rb.gravityScale = 0f;
+
+        float dir = ladderExitDirection >= 0 ? 1f : -1f;
+        Bounds b = col.bounds;
+
+        float remaining = (exitTargetX - transform.position.x) * dir; // сколько ещё идти
+        bool wallAhead = CastSolid(
+            new Vector2(b.center.x + dir * (b.extents.x + 0.02f), b.center.y),
+            new Vector2(dir, 0f), 0.1f).collider != null;
+
+        if (remaining <= 0.02f || wallAhead || exitTimer > exitTimeout)
+        {
+            EndLadderExit();
+            return;
+        }
+
+        float vx = dir * Mathf.Min(speed, remaining / dt);
+        rb.linearVelocity = new Vector2(vx, 0f);
+        UpdateAnim(vx);
+    }
+
+    void EndLadderExit()
+    {
+        exitingLadder = false;
+        col.isTrigger = false;
+        rb.gravityScale = normalGravity;
+        rb.linearVelocity = Vector2.zero;
+
+        // сбрасываем всё, что могло накопиться и вызвать «прыжки на месте»
+        stuckTimer = 0f;
+        jumpRetries = 0;
+        backoffTimer = 0f;
+        movingTimer = 0f;
+        lastDesiredVx = 0f;
+        jumpTimer = jumpCooldown;
+        coyoteTimer = coyoteTime;
+        climbCooldownTimer = 0.6f;
+        retargetTimer = 0f;
+        Log("сошёл с лестницы, иду дальше");
+    }
 
     // =====================================================================
     //  ЭТАЖИ И ПОИСК ЦЕЛЕЙ
@@ -761,9 +717,8 @@ void FinishClimb()
     bool LadderUsable(Bounds lb, int dir)
     {
         float f = groundedFeetY;
-        // Лестница должна пересекать уровень ног рыцаря и продолжаться в нужную сторону.
-        if (dir > 0) return lb.min.y <= f + 0.45f && lb.max.y >= f + 0.5f;
-        return lb.max.y >= f - 0.45f && lb.min.y <= f - 0.5f;
+        if (dir > 0) return lb.min.y <= f + 0.6f && lb.max.y >= f + 1.0f;
+        return lb.max.y >= f - 0.6f && lb.min.y <= f - 1.0f;
     }
 
     Transform FindBestLadder(float targetFeetY)
@@ -801,34 +756,37 @@ void FinishClimb()
         {
             return;
         }
+        if (candidate != null) Log("иду к лестнице: " + candidate.name);
         targetLadder = candidate;
         ladderLockTarget = target;
     }
 
+    void Log(string message)
+    {
+        if (debugLog) Debug.Log("[Knight] " + message, this);
+    }
+
+    void LogThrottled(string message)
+    {
+        if (!debugLog || Time.time - lastLogTime < 1f) return;
+        lastLogTime = Time.time;
+        Debug.Log("[Knight] " + message, this);
+    }
+
     bool CanSee(Transform t)
     {
-        // Не полагаемся на wallOnlyLayer: в сцене он может быть пустым.
-        // Проверяем все твёрдые коллайдеры по пути, игнорируя триггеры и самих скелетов.
         Vector2 from = col.bounds.center;
         Vector2 to = GetBounds(t).center;
-        Vector2 delta = to - from;
-        float distance = delta.magnitude;
-        if (distance < 0.01f) return true;
+        float d = Vector2.Distance(from, to);
+        if (d < 0.01f) return true;
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(from, delta / distance, distance, ObstacleMask);
-        for (int i = 0; i < hits.Length; i++)
-        {
-            Collider2D hit = hits[i].collider;
-            if (!IsSolid(hit)) continue;
-            if (hit.transform == t || hit.GetComponentInParent<ArcherBot>() != null) return true;
-            // Первый твёрдый объект до цели перекрывает обзор.
-            return false;
-        }
-        return true;
+        RaycastHit2D wall = Physics2D.Raycast(from, (to - from).normalized, d, wallOnlyLayer);
+        return wall.collider == null || wall.transform == t;
     }
 
     void SetArcher(Transform archer, ArcherBot script)
     {
+        if (targetArcher != archer) Log("цель: " + archer.name);
         targetArcher = archer;
         currentArcherScript = script;
         targetDoor = null;
@@ -836,7 +794,7 @@ void FinishClimb()
 
     void UpdateTargets()
     {
-        if (isClimbing) return;
+        if (isClimbing || exitingLadder) return;
 
         // Текущий скелет жив и на нашем этаже: продолжаем
         if (targetArcher != null && currentArcherScript != null &&
@@ -936,7 +894,6 @@ void FinishClimb()
             }
         }
     }
-    
 
     public void TakeArrowHit()
     {
@@ -966,24 +923,18 @@ void FinishClimb()
     // =====================================================================
     void OnDrawGizmosSelected()
     {
-        // Рисуем линию зрения только у выбранного рыцаря.
-        // Линия идёт к скелету, которого рыцарь сейчас выбрал целью.
-        if (targetArcher != null)
-        {
-            Gizmos.color = Color.red;
-            Vector3 from = transform.position + Vector3.up * 0.2f;
-            Vector3 to = targetArcher.position + Vector3.up * 0.2f;
-            Gizmos.DrawLine(from, to);
-        }
-
-        // Проверка земли остаётся только как отладочная рамка рыцаря.
         Collider2D c = col != null ? col : GetComponent<Collider2D>();
         if (c == null) return;
 
         Bounds b = c.bounds;
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(
-            new Vector3(b.center.x, b.min.y - 0.03f, 0f),
-            new Vector3(b.size.x * 0.8f, 0.1f, 0f));
+
+        Gizmos.color = Color.green; // проверка земли
+        Gizmos.DrawWireCube(new Vector3(b.center.x, b.min.y - 0.03f, 0f), new Vector3(b.size.x * 0.8f, 0.1f, 0f));
+
+        Gizmos.color = Color.red;   // проверка преград вправо и влево
+        Vector3 r = new Vector3(b.max.x + 0.02f, b.min.y + 0.2f, 0f);
+        Vector3 l = new Vector3(b.min.x - 0.02f, b.min.y + 0.2f, 0f);
+        Gizmos.DrawLine(r, r + Vector3.right * obstacleCheckDistance);
+        Gizmos.DrawLine(l, l + Vector3.left * obstacleCheckDistance);
     }
 }

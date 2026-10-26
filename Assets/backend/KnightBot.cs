@@ -1,5 +1,7 @@
 using UnityEngine;
+using System.Collections.Generic;
 using System.Text;
+using TMPro;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class KnightBot : MonoBehaviour
@@ -20,7 +22,6 @@ public class KnightBot : MonoBehaviour
 
     [Header("Защита от застревания")]
     public float stuckTime = 0.5f;
-    public int maxJumpRetries = 3;
     public float backoffTime = 0.8f;
 
     [Header("Этажи и цели")]
@@ -31,11 +32,29 @@ public class KnightBot : MonoBehaviour
     public float ladderAlignDistance = 0.2f;
     public float climbTimeout = 8f;
     public bool passThroughOnLadder = true;
-    public float leaveLadderTime = 0.35f;   // сколько секунд принудительно уходим с лестницы после подъёма/спуска
+    public float leaveLadderTime = 0.6f;
+    public float leaveLadderSpeedMultiplier = 1.6f;
+    public float ladderExitPush = 1.2f;
+    public float ladderReclimbCooldown = 2.0f;
+    public float ladderBlacklistDuration = 10.0f;
+    public float climbSuccessWindow = 3.0f;
+    public float climbSuccessMinRise = 0.5f;
+
+    [Header("Смерть")]
+    public string deathTag = "DeathZone";
+    public bool destroyOnDeath = true;
+
+    [Header("Диалог у двери (Реплики)")]
+    public GameObject speechBubbleObj;
+    public TextMeshProUGUI speechText;
+    public string[] doorPhrases;
+    public float phraseChangeInterval = 15f;
+    private float phraseTimer = 0f;
+    private bool wasNearDoorLastField = false;
 
     [Header("Отладка")]
     public bool debugLog = false;
-    public bool debugStuck = false;         // печатать в Console причину застревания
+    public bool debugStuck = false;
 
     [Header("Префаб Мусора")]
     public GameObject trashPrefab;
@@ -49,7 +68,6 @@ public class KnightBot : MonoBehaviour
     public int knightDamage = 25;
     public float attackCooldown = 1.5f;
 
-    // ---- служебное ----
     Rigidbody2D rb;
     Collider2D col;
     Animator anim;
@@ -82,24 +100,31 @@ public class KnightBot : MonoBehaviour
     const float scanStep = 0.25f;
     const float fineStep = 0.05f;
 
-    // Страховка схода с лестницы
     float leaveLadderTimer;
     float leaveLadderDir;
+    float leaveLadderTargetX;
 
     float lastDesiredVx;
     float stuckTimer;
-    int jumpRetries;
     float backoffTimer;
     float backoffDir;
     float movingTimer;
 
+    float lastJumpAttemptTime = -10f;
+    Vector3 lastJumpAttemptPos;
+
     bool colliderWasTrigger;
+
+    Transform lastUsedLadder;
+    float climbStartPreY;
+    float climbSuccessCheckTimer;
+    float climbCheckStartY;
+    Dictionary<Transform, float> blacklistedLadders = new Dictionary<Transform, float>();
+
+    bool isDead = false;
 
     int ObstacleMask { get { return ~ignoreLayers.value; } }
 
-    // =====================================================================
-    //  УТИЛИТЫ СОВМЕСТИМОСТИ
-    // =====================================================================
     Vector2 GetVel()
     {
 #if UNITY_6000_0_OR_NEWER
@@ -130,14 +155,24 @@ public class KnightBot : MonoBehaviour
         catch (UnityException) { return null; }
     }
 
-    // =====================================================================
-    //  ЖИЗНЕННЫЙ ЦИКЛ
-    // =====================================================================
+    bool IsLadderCollider(Collider2D c)
+    {
+        if (c == null) return false;
+        Transform t = c.transform;
+        for (int i = 0; i < 5 && t != null; i++)
+        {
+            if (t.CompareTag("Ladder")) return true;
+            t = t.parent;
+        }
+        return false;
+    }
+
     bool IsSolid(Collider2D c)
     {
         if (c == null || c.isTrigger) return false;
         if (c.attachedRigidbody == rb) return false;
         if (c.GetComponentInParent<ArcherBot>() != null) return false;
+        if (IsLadderCollider(c)) return false;
         return true;
     }
 
@@ -148,11 +183,58 @@ public class KnightBot : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         col = GetComponent<Collider2D>();
 
-        if (col == null)
+        if (col == null) { Debug.LogError("KnightBot: на рыцаре нужен Collider2D", this); enabled = false; return; }
+        if (rb == null)  { Debug.LogError("KnightBot: на рыцаре нужен Rigidbody2D", this); enabled = false; return; }
+
+        colliderWasTrigger = col.isTrigger;
+
+        if (rb.gravityScale <= 0f) rb.gravityScale = 1f;
+        normalGravity = rb.gravityScale;
+
+        rb.freezeRotation = true;
+        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+
+        if (_sharedKnightMat == null)
         {
-            Debug.LogError("KnightBot: на рыцаре нужен Collider2D", this);
-            enabled = false;
-            return;
+            _sharedKnightMat = new PhysicsMaterial2D("KnightNoFriction");
+            _sharedKnightMat.friction = 0f;
+            _sharedKnightMat.bounciness = 0f;
+        }
+        col.sharedMaterial = _sharedKnightMat;
+
+        if (leaveLadderTime < 0.3f) leaveLadderTime = 0.6f;
+        if (leaveLadderSpeedMultiplier < 1.0f) leaveLadderSpeedMultiplier = 1.6f;
+        if (ladderExitPush < 0.2f) ladderExitPush = 1.2f;
+        if (ladderReclimbCooldown < 1.0f) ladderReclimbCooldown = 2.0f;
+    }
+
+    void Start()
+    {
+        if (col == null) return;
+        groundedFeetY = col.bounds.min.y;
+        IgnoreAllLadderCollisions();
+
+        if (speechBubbleObj != null)
+        {
+            speechBubbleObj.SetActive(false);
+        }
+
+        if (!isBoss) UpdateTargets();
+    }
+
+    void IgnoreAllLadderCollisions()
+    {
+        GameObject[] ladders = SafeFindByTag("Ladder");
+        for (int i = 0; i < ladders.Length; i++)
+        {
+            Collider2D[] cols = ladders[i].GetComponentsInChildren<Collider2D>(true);
+            for (int j = 0; j < cols.Length; j++)
+            {
+                if (cols[j] == null || cols[j] == col) continue;
+                Physics2D.IgnoreCollision(col, cols[j], true);
+                Log("IgnoreCollision с " + cols[j].gameObject.name);
+            }
         }
         if (rb == null)
         {
@@ -179,7 +261,7 @@ public class KnightBot : MonoBehaviour
         col.sharedMaterial = _sharedKnightMat;
     }
 
-    void Start()
+    public void Start()
     {
         if (col == null) return;
         groundedFeetY = col.bounds.min.y;
@@ -188,6 +270,8 @@ public class KnightBot : MonoBehaviour
 
     void Update()
     {
+        if (isDead) return;
+
         attackTimer += Time.deltaTime;
 
         if (!isBoss)
@@ -199,11 +283,35 @@ public class KnightBot : MonoBehaviour
                 UpdateTargets();
             }
         }
+
+        HandleDoorDialogue();
     }
 
     void FixedUpdate()
     {
+        if (isDead) return;
+
         float dt = Time.fixedDeltaTime;
+
+        if (climbSuccessCheckTimer > 0f)
+        {
+            climbSuccessCheckTimer -= dt;
+            if (climbSuccessCheckTimer <= 0f && lastUsedLadder != null)
+            {
+                float finalY = col.bounds.min.y;
+                if (finalY < climbCheckStartY + climbSuccessMinRise)
+                {
+                    blacklistedLadders[lastUsedLadder] = Time.time + ladderBlacklistDuration;
+                    Log("climb FAILED: pre=" + climbCheckStartY.ToString("0.00") +
+                        " post=" + finalY.ToString("0.00"));
+                }
+                else
+                {
+                    Log("climb OK: pre=" + climbCheckStartY.ToString("0.00") +
+                        " post=" + finalY.ToString("0.00"));
+                }
+            }
+        }
 
         grounded = CheckGrounded();
         if (grounded)
@@ -219,7 +327,6 @@ public class KnightBot : MonoBehaviour
         jumpTimer -= dt;
         climbCooldownTimer -= dt;
 
-        // --- Лестница: ползание ---
         if (isClimbing)
         {
             ClimbStep(dt);
@@ -227,21 +334,44 @@ public class KnightBot : MonoBehaviour
             return;
         }
 
-        rb.gravityScale = normalGravity;
-
-        // --- Страховка схода с лестницы ---
+        // === ПЛАВНЫЙ СХОД С ЛЕСТНИЦЫ (без телепорта) ===
         if (leaveLadderTimer > 0f)
         {
             leaveLadderTimer -= dt;
-            lastDesiredVx = leaveLadderDir * speed;
-            ApplyMove(leaveLadderDir * speed);
+            rb.gravityScale = 0f;
+
+            float burstVx = leaveLadderDir * speed * leaveLadderSpeedMultiplier;
+            lastDesiredVx = burstVx;
+            SetVel(new Vector2(burstVx, 0f));
+            UpdateAnim(burstVx);
             stuckTimer = 0f;
             movingTimer = 0f;
-            jumpRetries = 0;
+
+            bool reachedTargetX = false;
+            if (!float.IsNaN(leaveLadderTargetX))
+            {
+                if (leaveLadderDir > 0 && rb.position.x >= leaveLadderTargetX - 0.05f) reachedTargetX = true;
+                if (leaveLadderDir < 0 && rb.position.x <= leaveLadderTargetX + 0.05f) reachedTargetX = true;
+            }
+
+            bool foundGround = HasGroundAtFloorY(col.bounds, groundedFeetY, 0.35f, 0.8f);
+
+            Bounds sb = col.bounds;
+            float probeX = sb.center.x + leaveLadderDir * (sb.extents.x + 0.03f);
+            RaycastHit2D wallProbe = CastSolid(
+                new Vector2(probeX, sb.center.y),
+                new Vector2(leaveLadderDir, 0f),
+                0.08f);
+            bool hitWall = wallProbe.collider != null;
+
+            if (reachedTargetX || foundGround || hitWall)
+                leaveLadderTimer = 0f;
+
             return;
         }
 
-        // --- Отход назад после неудачных попыток пройти ---
+        rb.gravityScale = normalGravity;
+
         if (backoffTimer > 0f)
         {
             backoffTimer -= dt;
@@ -266,9 +396,6 @@ public class KnightBot : MonoBehaviour
         ApplyMove(vx);
     }
 
-    // =====================================================================
-    //  ПРИНЯТИЕ РЕШЕНИЙ
-    // =====================================================================
     float DecideMovement()
     {
         Transform active = targetArcher != null ? targetArcher : targetDoor;
@@ -341,12 +468,13 @@ public class KnightBot : MonoBehaviour
         if (spriteRenderer != null && dir != 0f) spriteRenderer.flipX = dir < 0f;
     }
 
-    // =====================================================================
-    //  ПРЫЖКИ
-    // =====================================================================
     void AutoJump(float dir)
     {
         if (coyoteTimer <= 0f || jumpTimer > 0f || isClimbing) return;
+
+        if (Time.time - lastJumpAttemptTime < 1.5f &&
+            Vector3.Distance(rb.position, lastJumpAttemptPos) < 0.6f)
+            return;
 
         float h, frontX;
         if (ObstacleAhead(dir, out h, out frontX))
@@ -355,13 +483,19 @@ public class KnightBot : MonoBehaviour
             if (CanClear(dir, frontX, h, out v))
             {
                 Log("прыжок: высота преграды " + h.ToString("0.00") + ", скорость " + v.ToString("0.0"));
+                lastJumpAttemptTime = Time.time;
+                lastJumpAttemptPos = rb.position;
                 Jump(v);
             }
             return;
         }
 
         if (jumpOverGaps && GapAhead(dir) && !NearTargetLadder())
+        {
+            lastJumpAttemptTime = Time.time;
+            lastJumpAttemptPos = rb.position;
             Jump(jumpForce);
+        }
     }
 
     void Jump(float velocity)
@@ -374,7 +508,6 @@ public class KnightBot : MonoBehaviour
         grounded = false;
     }
 
-    // Безопасная гравитация: не бывает 0, чтобы не было деления на ноль.
     float Gravity()
     {
         float g = Mathf.Abs(Physics2D.gravity.y * normalGravity);
@@ -496,9 +629,6 @@ public class KnightBot : MonoBehaviour
         return Mathf.Abs(ladderX - knightX) < 1.5f;
     }
 
-    // =====================================================================
-    //  ЗЕМЛЯ И ЛУЧИ
-    // =====================================================================
     bool CheckGrounded()
     {
         Bounds b = col.bounds;
@@ -523,9 +653,18 @@ public class KnightBot : MonoBehaviour
         return new RaycastHit2D();
     }
 
-    // =====================================================================
-    //  АНТИЗАСТРЕВАНИЕ
-    // =====================================================================
+    bool HasGroundAtFloorY(Bounds b, float floorY, float tolerance, float depth)
+    {
+        float[] xs = { b.center.x, b.min.x + 0.1f, b.max.x - 0.1f };
+        for (int i = 0; i < xs.Length; i++)
+        {
+            RaycastHit2D hit = CastSolid(new Vector2(xs[i], b.min.y + 0.02f), Vector2.down, depth);
+            if (hit.collider == null) continue;
+            if (Mathf.Abs(hit.point.y - floorY) <= tolerance) return true;
+        }
+        return false;
+    }
+
     void CheckStuck(float dt)
     {
         bool trying = Mathf.Abs(lastDesiredVx) > 0.1f;
@@ -534,62 +673,50 @@ public class KnightBot : MonoBehaviour
         if (trying && grounded && actualVx < 0.15f) stuckTimer += dt;
         else stuckTimer = 0f;
 
-        if (trying && actualVx > 0.25f)
-        {
-            movingTimer += dt;
-            if (movingTimer > 1f) { jumpRetries = 0; movingTimer = 0f; }
-        }
-        else if (!trying)
-        {
-            movingTimer = 0f;
-        }
-
         if (stuckTimer < stuckTime) return;
         stuckTimer = 0f;
 
         if (debugStuck)
         {
             Bounds b = col.bounds;
-            Collider2D[] hits = Physics2D.OverlapBoxAll(b.center, b.size * 0.9f, 0f, ObstacleMask);
+            Collider2D[] stuckHits = Physics2D.OverlapBoxAll(b.center, b.size * 0.9f, 0f, ObstacleMask);
             StringBuilder sb = new StringBuilder();
-            foreach (var h in hits)
+            foreach (var hitC in stuckHits)
             {
-                if (h == null || h == col) continue;
-                if (!IsSolid(h)) continue;
-                sb.Append($"[{h.name} layer={h.gameObject.layer}] ");
+                if (hitC == null || hitC == col) continue;
+                if (!IsSolid(hitC)) continue;
+                sb.Append($"[{hitC.name} tag={hitC.tag} layer={hitC.gameObject.layer}] ");
             }
             Debug.LogWarning(
-                $"[Knight] STUCK: pos={rb.position} desiredVx={lastDesiredVx:F2} actualVx={actualVx:F2} " +
+                $"[Knight] STUCK pos={rb.position} desiredVx={lastDesiredVx:F2} actualVx={actualVx:F2} " +
                 $"grounded={grounded} floorY={groundedFeetY:F2} overlaps={sb}", this);
         }
 
-        if (jumpRetries < maxJumpRetries)
-        {
-            float t = (jumpRetries + 1f) / Mathf.Max(1, maxJumpRetries);
-            jumpTimer = 0f;
-            Jump(Mathf.Lerp(jumpForce, maxJumpForce, t));
-            jumpRetries++;
-        }
-        else
+        if (Mathf.Abs(lastDesiredVx) > 0.1f)
         {
             backoffDir = Mathf.Sign(lastDesiredVx);
             backoffTimer = backoffTime;
-            jumpRetries = 0;
         }
+
+        targetLadder = null;
+        ladderLockTarget = null;
+        retargetTimer = 0f;
     }
 
-    // =====================================================================
-    //  ЛЕСТНИЦЫ
-    // =====================================================================
     void StartClimb(Bounds ladderBounds, int dir)
     {
+        if (climbCooldownTimer > 0f) return;
+
         isClimbing = true;
         climbDir = dir;
         climbBounds = ladderBounds;
         climbTimer = 0f;
         climbStartFeetY = col.bounds.min.y;
+        climbStartPreY = col.bounds.min.y;
+        lastUsedLadder = targetLadder;
         leaveLadderTimer = 0f;
-        Log("начал " + (dir > 0 ? "подъём" : "спуск") + " по лестнице");
+        Log("начал " + (dir > 0 ? "подъём" : "спуск") + " по лестнице. preY=" +
+            climbStartPreY.ToString("0.00"));
 
         rb.gravityScale = 0f;
         SetVel(Vector2.zero);
@@ -608,7 +735,6 @@ public class KnightBot : MonoBehaviour
         bool done = false;
         if (climbDir > 0)
         {
-            // Поднимаемся чуть ВЫШЕ верхнего края лестницы, чтобы ступни не оказались внутри платформы
             if (b.min.y >= climbBounds.max.y + 0.02f) done = true;
         }
         else
@@ -624,64 +750,129 @@ public class KnightBot : MonoBehaviour
 
     void FinishClimb()
     {
-        // 1. Восстанавливаем физическое состояние — иначе OverlapBox не увидит перекрытий
         isClimbing = false;
         col.isTrigger = colliderWasTrigger;
         rb.gravityScale = normalGravity;
 
-        // 2. Выталкиваем рыцаря из любых твёрдых коллайдеров (платформа, потолок, лестница-не-триггер)
-        bool cleared = PushUpUntilClear();
-        if (!cleared && debugLog)
-            Debug.LogWarning("[Knight] FinishClimb: не удалось вытолкнуть рыцаря за 40 шагов — аварийный телепорт.", this);
+        PushUpUntilClear();
 
-        // 3. Гасим скорость. Небольшой импульс вверх помогает «отклеиться»
-        SetVel(new Vector2(0f, climbDir > 0 ? 0.5f : 0f));
+        SetVel(new Vector2(0f, 0.2f));
 
-        // 4. Определяем фактический уровень пола лучом вниз
         Bounds b = col.bounds;
-        RaycastHit2D floorRay = CastSolid(new Vector2(b.center.x, b.min.y + 0.05f), Vector2.down, 4f);
-        if (floorRay.collider != null)
+
+        float bestFloor = float.NegativeInfinity;
+        float[] xs = { b.center.x, b.min.x + 0.1f, b.max.x - 0.1f };
+        for (int i = 0; i < xs.Length; i++)
         {
-            groundedFeetY = floorRay.point.y;
+            RaycastHit2D[] hits = Physics2D.RaycastAll(
+                new Vector2(xs[i], b.min.y + 0.1f),
+                Vector2.down,
+                8f,
+                ObstacleMask);
+            for (int j = 0; j < hits.Length; j++)
+            {
+                if (!IsSolid(hits[j].collider)) continue;
+                if (hits[j].point.y <= b.min.y + 0.2f && hits[j].point.y > bestFloor)
+                    bestFloor = hits[j].point.y;
+            }
+        }
+
+        if (!float.IsNegativeInfinity(bestFloor))
+            groundedFeetY = bestFloor;
+        else
+            groundedFeetY = climbBounds.max.y;
+
+        float exitDir = 1f;
+        float knightX = rb.position.x;
+        float ladderCenterX = climbBounds.center.x;
+        float targetX = float.NaN;
+
+        if (climbDir > 0)
+        {
+            float groundScanX = FindSnapX(groundedFeetY, 3.0f);
+            if (!float.IsNaN(groundScanX) && Mathf.Abs(groundScanX - knightX) > 0.05f)
+            {
+                exitDir = Mathf.Sign(groundScanX - knightX);
+                targetX = groundScanX;
+                Log("цель сдвига X → " + groundScanX.ToString("0.00"));
+            }
+            else
+            {
+                exitDir = (knightX >= ladderCenterX) ? 1f : -1f;
+                targetX = knightX + exitDir * ladderExitPush;
+            }
         }
         else
         {
-            groundedFeetY = climbBounds.max.y;
-            if (debugLog)
-                Debug.LogWarning($"[Knight] FinishClimb: пол не найден, использую верх лестницы {climbBounds.max.y:F2}", this);
+            Transform active = targetArcher != null ? targetArcher : targetDoor;
+            if (active != null && Mathf.Abs(active.position.x - transform.position.x) > 0.1f)
+                exitDir = Mathf.Sign(active.position.x - transform.position.x);
+            else if (spriteRenderer != null)
+                exitDir = spriteRenderer.flipX ? -1f : 1f;
+            targetX = knightX + exitDir * ladderExitPush;
         }
+        if (Mathf.Abs(exitDir) < 0.1f) exitDir = 1f;
 
-        // 5. Сбрасываем антизастревание — иначе рыцарь сразу начнёт прыгать на месте
         stuckTimer = 0f;
         movingTimer = 0f;
-        jumpRetries = 0;
         backoffTimer = 0f;
         backoffDir = 0f;
         lastDesiredVx = 0f;
+        lastJumpAttemptTime = -10f;
 
-        // 6. Направление схода с лестницы
-        Transform active = targetArcher != null ? targetArcher : targetDoor;
-        float exitDir = 1f;
-        if (active != null && Mathf.Abs(active.position.x - transform.position.x) > 0.1f)
-            exitDir = Mathf.Sign(active.position.x - transform.position.x);
-        else if (spriteRenderer != null)
-            exitDir = spriteRenderer.flipX ? -1f : 1f;
-
-        // 7. Включаем принудительный сход
-        leaveLadderTimer = Mathf.Max(0.01f, leaveLadderTime);
+        leaveLadderTimer = Mathf.Max(0.05f, leaveLadderTime);
         leaveLadderDir = exitDir;
+        leaveLadderTargetX = targetX;
 
         jumpTimer = jumpCooldown;
-        climbCooldownTimer = 0.6f;
+        climbCooldownTimer = ladderReclimbCooldown;
         targetLadder = null;
         ladderLockTarget = null;
         retargetTimer = 0f;
 
-        Log("закончил " + (climbDir > 0 ? "подъём" : "спуск") + ", этаж y=" + groundedFeetY.ToString("0.00"));
+        climbSuccessCheckTimer = climbSuccessWindow;
+        climbCheckStartY = climbStartPreY;
+
+        Log("закончил " + (climbDir > 0 ? "подъём" : "спуск") +
+            ", этаж y=" + groundedFeetY.ToString("0.00") +
+            ", сдвиг dir=" + exitDir.ToString("0") +
+            ", targetX=" + targetX.ToString("0.00"));
     }
 
-    // Поднимает рыцаря вверх шагами по 0.1, пока его коллайдер не окажется вне твёрдых коллайдеров.
-    // Возвращает true, если удалось вытолкнуть без аварийного телепорта.
+    float FindSnapX(float floorY, float maxDist)
+    {
+        Bounds b = col.bounds;
+        float centerX = b.center.x;
+
+        for (float d = 0f; d <= maxDist; d += 0.1f)
+        {
+            for (int sign = -1; sign <= 1; sign += 2)
+            {
+                if (d == 0f && sign > 0) continue;
+                float testX = centerX + sign * d;
+
+                RaycastHit2D hit = CastSolid(new Vector2(testX, floorY + 0.1f), Vector2.down, 0.4f);
+                if (hit.collider == null) continue;
+                if (Mathf.Abs(hit.point.y - floorY) > 0.3f) continue;
+
+                Vector2 checkCenter = new Vector2(testX, floorY + b.extents.y + 0.05f);
+                Collider2D[] overlaps = Physics2D.OverlapBoxAll(checkCenter, b.size * 0.8f, 0f, ObstacleMask);
+                bool blocked = false;
+                for (int i = 0; i < overlaps.Length; i++)
+                {
+                    if (overlaps[i] == col) continue;
+                    if (!IsSolid(overlaps[i])) continue;
+                    blocked = true;
+                    break;
+                }
+                if (blocked) continue;
+
+                return testX;
+            }
+        }
+        return float.NaN;
+    }
+
     bool PushUpUntilClear()
     {
         for (int i = 0; i < 40; i++)
@@ -691,7 +882,7 @@ public class KnightBot : MonoBehaviour
             Bounds b = col.bounds;
             Collider2D[] hits = Physics2D.OverlapBoxAll(
                 b.center,
-                new Vector2(b.size.x * 0.85f, b.size.y * 0.9f), // чуть меньше — не считаем задевание за край
+                new Vector2(b.size.x * 0.85f, b.size.y * 0.9f),
                 0f,
                 ObstacleMask
             );
@@ -710,15 +901,11 @@ public class KnightBot : MonoBehaviour
             rb.position += Vector2.up * 0.1f;
         }
 
-        // Не удалось — аварийный телепорт наверх
         Bounds ab = col.bounds;
         rb.position += Vector2.up * (ab.size.y + 0.5f);
         return false;
     }
 
-    // =====================================================================
-    //  ЭТАЖИ И ПОИСК ЦЕЛЕЙ
-    // =====================================================================
     Bounds GetBounds(Transform t)
     {
         Collider2D c = t.GetComponent<Collider2D>();
@@ -731,10 +918,7 @@ public class KnightBot : MonoBehaviour
         return new Bounds(t.position, new Vector3(0.6f, 3f, 1f));
     }
 
-    float FeetY(Transform t)
-    {
-        return GetBounds(t).min.y;
-    }
+    float FeetY(Transform t) { return GetBounds(t).min.y; }
 
     bool SameFloor(float feetY)
     {
@@ -755,6 +939,18 @@ public class KnightBot : MonoBehaviour
         return lb.max.y >= f - 0.6f && lb.min.y <= f - 1.0f;
     }
 
+    bool IsBlacklisted(Transform ladder)
+    {
+        if (ladder == null) return false;
+        float until;
+        if (blacklistedLadders.TryGetValue(ladder, out until))
+        {
+            if (Time.time < until) return true;
+            blacklistedLadders.Remove(ladder);
+        }
+        return false;
+    }
+
     Transform FindBestLadder(float targetFeetY)
     {
         int dir = FloorDirTo(targetFeetY);
@@ -766,7 +962,10 @@ public class KnightBot : MonoBehaviour
 
         for (int i = 0; i < ladders.Length; i++)
         {
-            Bounds lb = GetBounds(ladders[i].transform);
+            Transform lt = ladders[i].transform;
+            if (IsBlacklisted(lt)) continue;
+
+            Bounds lb = GetBounds(lt);
             if (!LadderUsable(lb, dir)) continue;
 
             float reachedY = dir > 0 ? lb.max.y : lb.min.y;
@@ -776,7 +975,7 @@ public class KnightBot : MonoBehaviour
             if (score < bestScore)
             {
                 bestScore = score;
-                best = ladders[i].transform;
+                best = lt;
             }
         }
         return best;
@@ -794,10 +993,7 @@ public class KnightBot : MonoBehaviour
         ladderLockTarget = target;
     }
 
-    void Log(string message)
-    {
-        if (debugLog) Debug.Log("[Knight] " + message, this);
-    }
+    void Log(string message) { if (debugLog) Debug.Log("[Knight] " + message, this); }
 
     void LogThrottled(string message)
     {
@@ -825,9 +1021,12 @@ public class KnightBot : MonoBehaviour
         targetDoor = null;
     }
 
+    // ПРИОРИТЕТ: сначала скелеты (видимые / достижимые через лестницу / заблокированные),
+    // дверь — только если скелетов вообще нет.
     void UpdateTargets()
     {
         if (isClimbing) return;
+        if (leaveLadderTimer > 0f) return;
 
         if (targetArcher != null && currentArcherScript != null &&
             !currentArcherScript.IsDead() && SameFloor(FeetY(targetArcher)))
@@ -883,6 +1082,7 @@ public class KnightBot : MonoBehaviour
         }
         else
         {
+            // Скелетов нет — идём к двери
             targetArcher = null;
             currentArcherScript = null;
 
@@ -903,9 +1103,6 @@ public class KnightBot : MonoBehaviour
         }
     }
 
-    // =====================================================================
-    //  БОЙ И УРОН
-    // =====================================================================
     void AttackArcher()
     {
         if (anim != null) anim.SetTrigger("Attack");
@@ -921,6 +1118,92 @@ public class KnightBot : MonoBehaviour
                 UpdateTargets();
             }
         }
+    }
+
+    // === ДИАЛОГ У ДВЕРИ ===
+    void HandleDoorDialogue()
+    {
+        if (targetDoor != null)
+        {
+            float distToDoor = Vector2.Distance(transform.position, targetDoor.position);
+
+            if (distToDoor <= 2.5f)
+            {
+                if (!wasNearDoorLastField)
+                {
+                    wasNearDoorLastField = true;
+                    ShowRandomDoorPhrase();
+                    phraseTimer = phraseChangeInterval;
+                }
+                else
+                {
+                    phraseTimer -= Time.deltaTime;
+                    if (phraseTimer <= 0f)
+                    {
+                        ShowRandomDoorPhrase();
+                        phraseTimer = phraseChangeInterval;
+                    }
+                }
+            }
+            else
+            {
+                if (wasNearDoorLastField)
+                {
+                    wasNearDoorLastField = false;
+                    if (speechBubbleObj != null) speechBubbleObj.SetActive(false);
+                }
+            }
+        }
+        else
+        {
+            if (wasNearDoorLastField)
+            {
+                wasNearDoorLastField = false;
+                if (speechBubbleObj != null) speechBubbleObj.SetActive(false);
+            }
+        }
+    }
+
+    void ShowRandomDoorPhrase()
+    {
+        if (doorPhrases == null || doorPhrases.Length == 0) return;
+
+        if (speechBubbleObj != null)
+        {
+            speechBubbleObj.SetActive(true);
+        }
+
+        if (speechText != null)
+        {
+            int randomIndex = Random.Range(0, doorPhrases.Length);
+            speechText.text = doorPhrases[randomIndex];
+        }
+    }
+
+    // === ТРИГГЕР СМЕРТИ ===
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (isDead) return;
+        if (other == null) return;
+
+        if (!string.IsNullOrEmpty(deathTag) && other.CompareTag(deathTag))
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        if (isDead) return;
+        isDead = true;
+
+        if (trashPrefab != null)
+            Instantiate(trashPrefab, transform.position, Quaternion.identity);
+
+        if (destroyOnDeath)
+            Destroy(gameObject);
+        else
+            enabled = false;
     }
 
     public void TakeArrowHit()
@@ -942,9 +1225,6 @@ public class KnightBot : MonoBehaviour
         }
     }
 
-    // =====================================================================
-    //  ОТЛАДКА
-    // =====================================================================
     void OnDrawGizmosSelected()
     {
         Collider2D c = col != null ? col : GetComponent<Collider2D>();

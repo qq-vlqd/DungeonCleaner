@@ -1,18 +1,30 @@
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+    private const string VolumeKey = "volume";
+
     public GameObject settingsPanel;
     public Slider volumeSlider;
 
-    void Start()
+    private void Start()
     {
-        float v = PlayerPrefs.GetFloat("volume", 1f);
-        AudioListener.volume = v;
-        if (volumeSlider != null) volumeSlider.value = v;
-        settingsPanel.SetActive(false);
+        float volume = PlayerPrefs.GetFloat(VolumeKey, 1f);
+
+        AudioListener.volume = volume;
+
+        if (volumeSlider != null)
+        {
+            volumeSlider.minValue = 0f;
+            volumeSlider.maxValue = 1f;
+            volumeSlider.SetValueWithoutNotify(volume);
+        }
+
+        if (settingsPanel != null)
+            settingsPanel.SetActive(false);
     }
 
     public void StartGame()
@@ -22,17 +34,23 @@ public class MainMenu : MonoBehaviour
 
     public void OpenSettings()
     {
-        settingsPanel.SetActive(true);
+        if (settingsPanel != null)
+            settingsPanel.SetActive(true);
     }
 
     public void CloseSettings()
     {
-        settingsPanel.SetActive(false);
+        if (settingsPanel != null)
+            settingsPanel.SetActive(false);
     }
 
-    public void SetVolume(float v)
+    public void SetVolume(float value)
     {
-        AudioListener.volume = v;
-        PlayerPrefs.SetFloat("volume", v);
+        value = Mathf.Clamp01(value);
+
+        AudioListener.volume = value;
+
+        PlayerPrefs.SetFloat(VolumeKey, value);
+        PlayerPrefs.Save();
     }
 }
