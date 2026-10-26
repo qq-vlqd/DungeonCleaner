@@ -1423,7 +1423,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 6.4375
+  orthographic size: 6.515625
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2089,6 +2089,7 @@ GameObject:
   - component: {fileID: 510609545}
   - component: {fileID: 510609546}
   - component: {fileID: 510609547}
+  - component: {fileID: 510609548}
   m_Layer: 0
   m_Name: knight
   m_TagString: Knight
@@ -2103,7 +2104,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 510609541}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b28209105105cd47badd875417fd527, type: 3}
   m_Name: 
@@ -2291,6 +2292,54 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &510609548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 510609541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9034ec74b9d3ce1478667163f7e43af9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2.5
+  climbSpeed: 3
+  jumpForce: 7
+  maxJumpForce: 9
+  jumpMargin: 0.1
+  obstacleCheckDistance: 0.5
+  jumpCooldown: 0.3
+  jumpOverGaps: 1
+  maxGapWidth: 2.5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  wallOnlyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  ignoreLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  stuckTime: 0.5
+  maxJumpRetries: 3
+  backoffTime: 0.8
+  floorTolerance: 1.5
+  retargetInterval: 0.25
+  ladderAlignDistance: 0.2
+  climbTimeout: 8
+  passThroughOnLadder: 1
+  exitStepDistance: 1
+  ladderExitDirection: -1
+  exitTimeout: 2
+  debugLog: 0
+  trashPrefab: {fileID: 0}
+  isBoss: 0
+  bossHP: 100
+  attackRange: 1.5
+  knightDamage: 25
+  attackCooldown: 1.5
 --- !u!1001 &530352195
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3588,9 +3637,9 @@ GameObject:
   - component: {fileID: 983962604}
   - component: {fileID: 983962603}
   - component: {fileID: 983962602}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Dungeon Tile Set_37 (3)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3893,6 +3942,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3965804386944002097, guid: a031dff00721d8e499f00d475e62313a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 921633843}
+    - target: {fileID: 3965804386944002097, guid: a031dff00721d8e499f00d475e62313a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ExitToMenu
+      objectReference: {fileID: 0}
     - target: {fileID: 4654271527364067669, guid: a031dff00721d8e499f00d475e62313a, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -3980,6 +4037,14 @@ PrefabInstance:
     - target: {fileID: 6042710948744042899, guid: a031dff00721d8e499f00d475e62313a, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864011604854995339, guid: a031dff00721d8e499f00d475e62313a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 921633843}
+    - target: {fileID: 6864011604854995339, guid: a031dff00721d8e499f00d475e62313a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Resume
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
