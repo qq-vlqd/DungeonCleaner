@@ -2112,21 +2112,43 @@ MonoBehaviour:
   speed: 2
   climbSpeed: 2
   jumpForce: 5
+  maxJumpForce: 9
+  jumpMargin: 0.1
   obstacleCheckDistance: 0.8
+  jumpCooldown: 0.6
+  jumpOverGaps: 1
+  maxGapWidth: 2.5
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   wallOnlyLayer:
     serializedVersion: 2
     m_Bits: 0
-  rayHeightOffset: -0.2
+  ignoreLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  stuckTime: 0.5
+  backoffTime: 0.8
+  floorTolerance: 1.5
+  retargetInterval: 0.25
+  ladderAlignDistance: 0.2
+  climbTimeout: 8
+  passThroughOnLadder: 1
+  leaveLadderTime: 1
+  leaveLadderSpeedMultiplier: 1.6
+  ladderExitPush: 1.2
+  ladderReclimbCooldown: 2
+  ladderBlacklistDuration: 10
+  climbSuccessWindow: 3
+  climbSuccessMinRise: 0.5
+  debugLog: 0
+  debugStuck: 0
   trashPrefab: {fileID: 5290459231065880416, guid: 214945dd7671a5b82a3da17c5e6b402e, type: 3}
   isBoss: 0
   bossHP: 100
   attackRange: 1.5
   knightDamage: 25
   attackCooldown: 1.5
-  jumpCooldown: 0.6
 --- !u!212 &510609543
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6957,7 +6979,7 @@ GameObject:
   - component: {fileID: 1925866119}
   - component: {fileID: 1925866118}
   - component: {fileID: 1925866117}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Dungeon Tile Set_6 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7536,11 +7558,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8788573428913484201, guid: 0c02fed14a2f67343ae079cddc40e340, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.8721437
+      value: -8.42
       objectReference: {fileID: 0}
     - target: {fileID: 8788573428913484201, guid: 0c02fed14a2f67343ae079cddc40e340, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.255693
+      value: 2.7
       objectReference: {fileID: 0}
     - target: {fileID: 8788573428913484201, guid: 0c02fed14a2f67343ae079cddc40e340, type: 3}
       propertyPath: m_LocalPosition.z
