@@ -5067,7 +5067,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 502
-  canAttack: 1
+  canAttack: 0
   attackDamage: 20
   attackRange: 1.5
   enemyLayer:
@@ -5077,7 +5077,6 @@ MonoBehaviour:
   deathSound: {fileID: 8300000, guid: 4ff303fb34b4b684ebf98a2cab1a2a8d, type: 3}
   footstepSound: {fileID: 8300000, guid: 171be572e563b8f4b8f90971bbd37cbc, type: 3}
   attackSound: {fileID: 0}
-  restartDelay: 2
 --- !u!212 &1585859355
 SpriteRenderer:
   m_ObjectHideFlags: 0

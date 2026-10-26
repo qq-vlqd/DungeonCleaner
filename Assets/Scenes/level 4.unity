@@ -1361,7 +1361,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8119317741043176347, guid: 6cf7f3279beacb443a8bba0a586fe94b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.1074686
+      value: 6.21
       objectReference: {fileID: 0}
     - target: {fileID: 8119317741043176347, guid: 6cf7f3279beacb443a8bba0a586fe94b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2446,7 +2446,7 @@ Transform:
   m_GameObject: {fileID: 352073541}
   serializedVersion: 2
   m_LocalRotation: {x: -0.0049365354, y: 0.0049365354, z: 0.7070896, w: 0.7070896}
-  m_LocalPosition: {x: 15.93, y: 4.23, z: 0.02}
+  m_LocalPosition: {x: 15.93, y: 5.28, z: 0.01}
   m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5142,7 +5142,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 502
-  canAttack: 1
+  canAttack: 0
   attackDamage: 20
   attackRange: 1.5
   enemyLayer:
@@ -5152,7 +5152,6 @@ MonoBehaviour:
   deathSound: {fileID: 8300000, guid: 4ff303fb34b4b684ebf98a2cab1a2a8d, type: 3}
   footstepSound: {fileID: 8300000, guid: 171be572e563b8f4b8f90971bbd37cbc, type: 3}
   attackSound: {fileID: 0}
-  restartDelay: 2
 --- !u!212 &1050996030
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10308,4 +10307,4 @@ SceneRoots:
   - {fileID: 552758502}
   - {fileID: 1632590214}
   - {fileID: 191801790}
-  - {fileID: 1323320532}
+  - {fileID: 1795028931}
