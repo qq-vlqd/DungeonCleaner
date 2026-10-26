@@ -2,21 +2,14 @@ using UnityEngine;
 
 public class TrashItem : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        // Проверяем, коснулся ли нас слайм
-        if (collision.CompareTag("Player") || collision.GetComponent<SlimeController>() != null)
+        SlimeController slime = other.GetComponent<SlimeController>();
+
+        if (slime != null)
         {
+            slime.AddTrash(1);
             Debug.Log("Мусор подобран!");
-
-            // Если хотите увеличивать счетчик в контроллере слайма:
-            SlimeController slime = collision.GetComponent<SlimeController>() ?? collision.GetComponentInParent<SlimeController>();
-            if (slime != null)
-            {
-                slime.collectedTrashCount++;
-            }
-
-            // Уничтожаем мусор
             Destroy(gameObject);
         }
     }
